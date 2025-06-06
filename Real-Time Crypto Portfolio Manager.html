@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Real-Time Crypto Portfolio Manager</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background-color: #121212; color: #ffffff; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; background-color: #1e1e1e; }
+    th, td { border: 1px solid #333; padding: 8px; text-align: center; }
+    th { background-color: #333; }
+    input, button { padding: 5px; margin-right: 5px; background-color: #333; color: white; border: none; }
+    input[type="number"] { width: 120px; }
+    canvas { max-width: 800px; margin-top: 40px; }
+  </style>
+</head>
+<body>
+  <h1>📈 Real-Time Crypto Portfolio Manager</h1>
+  <form id="addForm">
+    <input type="text" id="coin" placeholder="Coin Symbol (e.g. BTC)" required>
+    <input type="number" id="buyPrice" step="0.00000001" placeholder="Buy Price (USD)" required>
+    <button type="submit">Add Coin</button>
+    <button type="button" onclick="exportCSV()">Export to CSV</button>
+  </form>
+
+  <table id="portfolioTable">
+    <thead>
+      <tr>
+        <th>Coin</th>
+        <th>Buy Price</th>
+        <th>Current Price</th>
+        <th>Gain/Loss</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <canvas id="gainLossChart"></canvas>
+
+  <script>
+    const API_URL = 'https://api.binance.com/api/v3/ticker/price?symbol=';
+    let portfolio = JSON.parse(localStorage.getItem('portfolio')) || {};
+    let chart;
+
+    function savePortfolio() {
+      localStorage.setItem('portfolio', JSON.stringify(portfolio));
+    }
+
+    function deleteCoin(coin) {
+      delete portfolio[coin];
+      savePortfolio();
+      renderPortfolio();
+    }
+
+    function updateCoin(coin, buyPrice) {
+      portfolio[coin] = parseFloat(buyPrice);
+      savePortfolio();
+      renderPortfolio();
+    }
+
+    async function fetchPrice(symbol) {
+      try {
+        const res = await fetch(API_URL + symbol.toUpperCase() + 'USDT');
+        const data = await res.json();
+        return parseFloat(data.price);
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function exportCSV() {
+      let csv = 'Coin,Buy Price,Current Price,Gain/Loss\n';
+      const rows = document.querySelectorAll('#portfolioTable tbody tr');
+      rows.forEach(row => {
+        const cols = row.querySelectorAll('td');
+        csv += `${cols[0].textContent},${cols[1].querySelector('input').value},${cols[2].textContent},${cols[3].textContent}\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'crypto_portfolio.csv';
+      a.click();
+    }
+
+    async function renderPortfolio() {
+      const tbody = document.querySelector('#portfolioTable tbody');
+      tbody.innerHTML = '';
+      const labels = [];
+      const dataPoints = [];
+
+      for (const [coin, buyPrice] of Object.entries(portfolio)) {
+        const currentPrice = await fetchPrice(coin);
+        const gainLoss = currentPrice ? (currentPrice - buyPrice).toFixed(8) : 'N/A';
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${coin}</td>
+          <td><input type="number" value="${buyPrice}" step="0.00000001" onchange="updateCoin('${coin}', this.value)"></td>
+          <td>${currentPrice ? currentPrice.toFixed(8) : 'N/A'}</td>
+          <td>${gainLoss}</td>
+          <td><button onclick="deleteCoin('${coin}')">Delete</button></td>
+        `;
+        tbody.appendChild(row);
+
+        if (!isNaN(gainLoss)) {
+          labels.push(coin);
+          dataPoints.push(parseFloat(gainLoss));
+        }
+      }
+
+      renderChart(labels, dataPoints);
+    }
+
+    function renderChart(labels, dataPoints) {
+      const ctx = document.getElementById('gainLossChart').getContext('2d');
+      if (chart) chart.destroy();
+      chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Gain/Loss (USD)',
+            data: dataPoints,
+            backgroundColor: dataPoints.map(v => v >= 0 ? 'green' : 'red')
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            title: { display: true, text: 'Portfolio Gain/Loss Overview' }
+          }
+        }
+      });
+    }
+
+    document.getElementById('addForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const coin = document.getElementById('coin').value.toUpperCase().trim();
+      const buyPrice = parseFloat(document.getElementById('buyPrice').value);
+      if (coin && !isNaN(buyPrice) && buyPrice > 0) {
+        portfolio[coin] = buyPrice;
+        savePortfolio();
+        renderPortfolio();
+        e.target.reset();
+      } else {
+        alert('Please enter a valid coin symbol and a buy price greater than 0.');
+      }
+    });
+
+    setInterval(renderPortfolio, 5000);
+    renderPortfolio();
+  </script>
+</body>
+</html>
