@@ -1,159 +1,638 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Real-Time Crypto Portfolio Manager</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; background-color: #121212; color: #ffffff; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; background-color: #1e1e1e; }
-    th, td { border: 1px solid #333; padding: 8px; text-align: center; }
-    th { background-color: #333; }
-    input, button { padding: 5px; margin-right: 5px; background-color: #333; color: white; border: none; }
-    input[type="number"] { width: 120px; }
-    canvas { max-width: 800px; margin-top: 40px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Crypto Portfolio Manager</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: #e2e8f0;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px 0 40px;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #00dc82, #00c4cc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(0, 220, 130, 0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        @media (max-width: 900px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .card {
+            background: rgba(30, 41, 59, 0.7);
+            border-radius: 16px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+        }
+        
+        .add-coin-form {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #94a3b8;
+            font-size: 1rem;
+        }
+        
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 12px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e2e8f0;
+            font-size: 1.05rem;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #00dc82;
+            box-shadow: 0 0 0 3px rgba(0, 220, 130, 0.2);
+        }
+        
+        .btn {
+            background: linear-gradient(to right, #00dc82, #00c4cc);
+            color: #0f172a;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            font-size: 1.05rem;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(0, 220, 130, 0.4);
+        }
+        
+        .btn.export {
+            background: linear-gradient(to right, #6366f1, #8b5cf6);
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .btn.export:hover {
+            box-shadow: 0 7px 20px rgba(99, 102, 241, 0.4);
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            border-radius: 16px;
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 18px 22px;
+            text-align: left;
+        }
+        
+        thead {
+            background: rgba(15, 23, 42, 0.8);
+        }
+        
+        th {
+            font-weight: 600;
+            color: #94a3b8;
+            font-size: 1.05rem;
+        }
+        
+        tbody tr {
+            border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+            transition: background 0.2s;
+        }
+        
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+        
+        tbody tr:hover {
+            background: rgba(30, 41, 59, 0.9);
+        }
+        
+        .coin-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .coin-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00dc82, #00c4cc);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #0f172a;
+            font-size: 1.1rem;
+        }
+        
+        .coin-name {
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+        
+        .coin-symbol {
+            font-size: 0.95rem;
+            color: #94a3b8;
+        }
+        
+        .positive {
+            color: #00dc82;
+        }
+        
+        .negative {
+            color: #ef4444;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(15, 23, 42, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .action-btn:hover {
+            transform: scale(1.1);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .action-btn.delete:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+        
+        .price-update-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: #94a3b8;
+            margin-top: 25px;
+            font-size: 0.95rem;
+        }
+        
+        .price-update-indicator .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #00dc82;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.2; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 0.2; transform: scale(0.8); }
+        }
+        
+        .last-updated {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #94a3b8;
+            font-size: 0.95rem;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        
+        .last-updated i {
+            color: #00dc82;
+        }
+        
+        .value-cell {
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+    </style>
 </head>
 <body>
-  <h1>📈 Real-Time Crypto Portfolio Manager</h1>
-  <form id="addForm">
-    <input type="text" id="coin" placeholder="Coin Symbol (e.g. BTC)" required>
-    <input type="number" id="buyPrice" step="0.00000001" placeholder="Buy Price (USD)" required>
-    <button type="submit">Add Coin</button>
-    <button type="button" onclick="exportCSV()">Export to CSV</button>
-  </form>
-
-  <table id="portfolioTable">
-    <thead>
-      <tr>
-        <th>Coin</th>
-        <th>Buy Price</th>
-        <th>Current Price</th>
-        <th>Gain/Loss</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-
-  <canvas id="gainLossChart"></canvas>
-
-  <script>
-    const API_URL = 'https://api.binance.com/api/v3/ticker/price?symbol=';
-    let portfolio = JSON.parse(localStorage.getItem('portfolio')) || {};
-    let chart;
-
-    function savePortfolio() {
-      localStorage.setItem('portfolio', JSON.stringify(portfolio));
-    }
-
-    function deleteCoin(coin) {
-      delete portfolio[coin];
-      savePortfolio();
-      renderPortfolio();
-    }
-
-    function updateCoin(coin, buyPrice) {
-      portfolio[coin] = parseFloat(buyPrice);
-      savePortfolio();
-      renderPortfolio();
-    }
-
-    async function fetchPrice(symbol) {
-      try {
-        const res = await fetch(API_URL + symbol.toUpperCase() + 'USDT');
-        const data = await res.json();
-        return parseFloat(data.price);
-      } catch (e) {
-        return null;
-      }
-    }
-
-    function exportCSV() {
-      let csv = 'Coin,Buy Price,Current Price,Gain/Loss\n';
-      const rows = document.querySelectorAll('#portfolioTable tbody tr');
-      rows.forEach(row => {
-        const cols = row.querySelectorAll('td');
-        csv += `${cols[0].textContent},${cols[1].querySelector('input').value},${cols[2].textContent},${cols[3].textContent}\n`;
-      });
-      const blob = new Blob([csv], { type: 'text/csv' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'crypto_portfolio.csv';
-      a.click();
-    }
-
-    async function renderPortfolio() {
-      const tbody = document.querySelector('#portfolioTable tbody');
-      tbody.innerHTML = '';
-      const labels = [];
-      const dataPoints = [];
-
-      for (const [coin, buyPrice] of Object.entries(portfolio)) {
-        const currentPrice = await fetchPrice(coin);
-        const gainLoss = currentPrice ? (currentPrice - buyPrice).toFixed(8) : 'N/A';
-
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${coin}</td>
-          <td><input type="number" value="${buyPrice}" step="0.00000001" onchange="updateCoin('${coin}', this.value)"></td>
-          <td>${currentPrice ? currentPrice.toFixed(8) : 'N/A'}</td>
-          <td>${gainLoss}</td>
-          <td><button onclick="deleteCoin('${coin}')">Delete</button></td>
-        `;
-        tbody.appendChild(row);
-
-        if (!isNaN(gainLoss)) {
-          labels.push(coin);
-          dataPoints.push(parseFloat(gainLoss));
+    <div class="container">
+        <header>
+            <h1>Real-Time Crypto Portfolio Manager</h1>
+            <p class="subtitle">Track your cryptocurrency investments with live price updates</p>
+        </header>
+        
+        <div class="dashboard">
+            <div class="card">
+                <h2 style="margin-bottom: 25px; font-size: 1.6rem; color: #e2e8f0;">Add New Coin</h2>
+                <form class="add-coin-form" id="coinForm">
+                    <div class="form-group">
+                        <label for="coinSymbol">Symbol (e.g. BTC)</label>
+                        <input type="text" id="coinSymbol" placeholder="Enter symbol" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="buyPrice">Buy Price (USD)</label>
+                        <input type="number" step="0.00000001" id="buyPrice" placeholder="Enter buy price" required>
+                    </div>
+                    <button type="submit" class="btn">
+                        <i class="fas fa-plus"></i> Add Coin
+                    </button>
+                </form>
+                
+                <button class="btn export" id="exportBtn">
+                    <i class="fas fa-file-export"></i> Export to CSV
+                </button>
+            </div>
+            
+            <div class="table-container">
+                <table id="portfolioTable">
+                    <thead>
+                        <tr>
+                            <th>Symbol</th>
+                            <th>Buy Price (USD)</th>
+                            <th>Current Price (USD)</th>
+                            <th>Gain/Loss (USD)</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="coin-info">
+                                    <div class="coin-icon">S</div>
+                                    <div>
+                                        <div class="coin-name">Solana</div>
+                                        <div class="coin-symbol">SOL</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="value-cell">148.95</td>
+                            <td class="value-cell positive">152.36</td>
+                            <td class="value-cell positive">+3.41</td>
+                            <td>
+                                <div class="actions">
+                                    <div class="action-btn delete">
+                                        <i class="fas fa-trash"></i>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="coin-info">
+                                    <div class="coin-icon">S</div>
+                                    <div>
+                                        <div class="coin-name">Syrup</div>
+                                        <div class="coin-symbol">SYRUP</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="value-cell">0.4418</td>
+                            <td class="value-cell negative">0.3976</td>
+                            <td class="value-cell negative">-0.0442</td>
+                            <td>
+                                <div class="actions">
+                                    <div class="action-btn delete">
+                                        <i class="fas fa-trash"></i>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="coin-info">
+                                    <div class="coin-icon">P</div>
+                                    <div>
+                                        <div class="coin-name">Pepe</div>
+                                        <div class="coin-symbol">PEPE</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="value-cell">0.00001237</td>
+                            <td class="value-cell negative">0.00001104</td>
+                            <td class="value-cell negative">-0.00000133</td>
+                            <td>
+                                <div class="actions">
+                                    <div class="action-btn delete">
+                                        <i class="fas fa-trash"></i>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="coin-info">
+                                    <div class="coin-icon">K</div>
+                                    <div>
+                                        <div class="coin-name">Kaito</div>
+                                        <div class="coin-symbol">KAITO</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="value-cell">1.8162</td>
+                            <td class="value-cell negative">1.6162</td>
+                            <td class="value-cell negative">-0.2000</td>
+                            <td>
+                                <div class="actions">
+                                    <div class="action-btn delete">
+                                        <i class="fas fa-trash"></i>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="price-update-indicator">
+            <div class="dot"></div>
+            <span>Prices update automatically every 5 seconds</span>
+        </div>
+        
+        <div class="last-updated">
+            <i class="fas fa-sync-alt"></i>
+            <span id="lastUpdated">Last updated: Just now</span>
+        </div>
+    </div>
+    
+    <script>
+        // Database for coins
+        let portfolio = [
+            { id: 1, symbol: "SOL", name: "Solana", buyPrice: 148.95, currentPrice: 152.36 },
+            { id: 2, symbol: "SYRUP", name: "Syrup", buyPrice: 0.4418, currentPrice: 0.3976 },
+            { id: 3, symbol: "PEPE", name: "Pepe", buyPrice: 0.00001237, currentPrice: 0.00001104 },
+            { id: 4, symbol: "KAITO", name: "Kaito", buyPrice: 1.8162, currentPrice: 1.6162 }
+        ];
+        
+        // DOM elements
+        const coinForm = document.getElementById('coinForm');
+        const coinSymbolInput = document.getElementById('coinSymbol');
+        const buyPriceInput = document.getElementById('buyPrice');
+        const portfolioTable = document.getElementById('portfolioTable').querySelector('tbody');
+        const exportBtn = document.getElementById('exportBtn');
+        const lastUpdatedEl = document.getElementById('lastUpdated');
+        
+        // Render portfolio table
+        function renderPortfolio() {
+            portfolioTable.innerHTML = '';
+            
+            portfolio.forEach(coin => {
+                const gainLoss = coin.currentPrice - coin.buyPrice;
+                const isPositive = gainLoss >= 0;
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <div class="coin-info">
+                            <div class="coin-icon">${coin.symbol.charAt(0)}</div>
+                            <div>
+                                <div class="coin-name">${coin.name}</div>
+                                <div class="coin-symbol">${coin.symbol}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="value-cell">${coin.buyPrice.toFixed(8)}</td>
+                    <td class="value-cell ${isPositive ? 'positive' : 'negative'}">${coin.currentPrice.toFixed(8)}</td>
+                    <td class="value-cell ${isPositive ? 'positive' : 'negative'}">${gainLoss >= 0 ? '+' : ''}${gainLoss.toFixed(8)}</td>
+                    <td>
+                        <div class="actions">
+                            <div class="action-btn delete" data-id="${coin.id}">
+                                <i class="fas fa-trash"></i>
+                            </div>
+                        </div>
+                    </td>
+                `;
+                
+                portfolioTable.appendChild(row);
+            });
+            
+            // Add delete event listeners
+            document.querySelectorAll('.action-btn.delete').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const coinId = parseInt(this.getAttribute('data-id'));
+                    deleteCoin(coinId);
+                });
+            });
         }
-      }
-
-      renderChart(labels, dataPoints);
-    }
-
-    function renderChart(labels, dataPoints) {
-      const ctx = document.getElementById('gainLossChart').getContext('2d');
-      if (chart) chart.destroy();
-      chart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: labels,
-          datasets: [{
-            label: 'Gain/Loss (USD)',
-            data: dataPoints,
-            backgroundColor: dataPoints.map(v => v >= 0 ? 'green' : 'red')
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: { display: false },
-            title: { display: true, text: 'Portfolio Gain/Loss Overview' }
-          }
+        
+        // Add new coin
+        function addCoin(symbol, buyPrice) {
+            // Symbol to name mapping
+            const nameMap = {
+                "BTC": "Bitcoin",
+                "ETH": "Ethereum",
+                "SOL": "Solana",
+                "BNB": "Binance Coin",
+                "XRP": "Ripple",
+                "ADA": "Cardano",
+                "DOGE": "Dogecoin",
+                "DOT": "Polkadot",
+                "LTC": "Litecoin",
+                "LINK": "Chainlink",
+                "BCH": "Bitcoin Cash",
+                "XLM": "Stellar",
+                "USDT": "Tether",
+                "USDC": "USD Coin",
+                "UNI": "Uniswap",
+                "WBTC": "Wrapped Bitcoin",
+                "MATIC": "Polygon",
+                "ETC": "Ethereum Classic",
+                "AAVE": "Aave",
+                "EOS": "EOS",
+                "XMR": "Monero",
+                "TRX": "TRON",
+                "XTZ": "Tezos",
+                "SUSHI": "SushiSwap",
+                "MKR": "Maker",
+                "COMP": "Compound",
+                "YFI": "Yearn.finance",
+                "ATOM": "Cosmos",
+                "VET": "VeChain",
+                "THETA": "Theta Network",
+                "FIL": "Filecoin",
+                "NEO": "NEO",
+                "ALGO": "Algorand",
+                "KSM": "Kusama",
+                "DASH": "Dash",
+                "ZEC": "Zcash",
+                "ENJ": "Enjin Coin",
+                "BAT": "Basic Attention Token",
+                "MANA": "Decentraland",
+                "ZIL": "Zilliqa",
+                "QTUM": "Qtum",
+                "ICX": "ICON",
+                "OMG": "OMG Network",
+                "SNX": "Synthetix",
+                "GRT": "The Graph",
+                "CRV": "Curve DAO Token",
+                "BAND": "Band Protocol",
+                "REN": "Ren",
+                "UMA": "UMA",
+                "BAL": "Balancer",
+                "REP": "Augur",
+                "NMR": "Numeraire",
+                "OXT": "Orchid",
+                "KNC": "Kyber Network",
+                "ANT": "Aragon",
+                "SYRUP": "Syrup",
+                "PEPE": "Pepe",
+                "KAITO": "Kaito"
+            };
+            
+            const name = nameMap[symbol.toUpperCase()] || symbol;
+            
+            const newCoin = {
+                id: portfolio.length > 0 ? Math.max(...portfolio.map(c => c.id)) + 1 : 1,
+                symbol: symbol.toUpperCase(),
+                name: name,
+                buyPrice: parseFloat(buyPrice),
+                currentPrice: parseFloat(buyPrice) // Start with same as buy price
+            };
+            
+            portfolio.push(newCoin);
+            renderPortfolio();
         }
-      });
-    }
-
-    document.getElementById('addForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const coin = document.getElementById('coin').value.toUpperCase().trim();
-      const buyPrice = parseFloat(document.getElementById('buyPrice').value);
-      if (coin && !isNaN(buyPrice) && buyPrice > 0) {
-        portfolio[coin] = buyPrice;
-        savePortfolio();
+        
+        // Delete coin
+        function deleteCoin(coinId) {
+            portfolio = portfolio.filter(coin => coin.id !== coinId);
+            renderPortfolio();
+        }
+        
+        // Update prices (simulate API call)
+        function updatePrices() {
+            portfolio.forEach(coin => {
+                // Generate a random price change between -5% and +5%
+                const change = (Math.random() * 0.1) - 0.05;
+                coin.currentPrice = coin.buyPrice * (1 + change);
+            });
+            
+            renderPortfolio();
+            updateLastUpdated();
+        }
+        
+        // Update last updated timestamp
+        function updateLastUpdated() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            lastUpdatedEl.textContent = `Last updated: ${timeString}`;
+        }
+        
+        // Export to CSV
+        function exportToCSV() {
+            let csvContent = "Symbol,Name,Buy Price,Current Price,Gain/Loss\n";
+            
+            portfolio.forEach(coin => {
+                const gainLoss = coin.currentPrice - coin.buyPrice;
+                csvContent += `${coin.symbol},${coin.name},${coin.buyPrice},${coin.currentPrice},${gainLoss}\n`;
+            });
+            
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.setAttribute('href', url);
+            link.setAttribute('download', 'crypto_portfolio.csv');
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
+        // Event listeners
+        coinForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const symbol = coinSymbolInput.value.trim();
+            const buyPrice = buyPriceInput.value.trim();
+            
+            if (symbol && buyPrice) {
+                addCoin(symbol, buyPrice);
+                coinSymbolInput.value = '';
+                buyPriceInput.value = '';
+                coinSymbolInput.focus();
+            }
+        });
+        
+        exportBtn.addEventListener('click', exportToCSV);
+        
+        // Initialize
         renderPortfolio();
-        e.target.reset();
-      } else {
-        alert('Please enter a valid coin symbol and a buy price greater than 0.');
-      }
-    });
-
-    setInterval(renderPortfolio, 5000);
-    renderPortfolio();
-  </script>
+        updateLastUpdated();
+        
+        // Update prices every 5 seconds
+        setInterval(updatePrices, 5000);
+    </script>
 </body>
 </html>
