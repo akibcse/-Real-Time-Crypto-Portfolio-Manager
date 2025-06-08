@@ -18,23 +18,21 @@
             color: #e2e8f0;
             min-height: 100vh;
             padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
         
         .container {
             max-width: 1200px;
             width: 100%;
+            margin: 0 auto;
         }
         
         header {
             text-align: center;
-            padding: 20px 0 40px;
+            padding: 20px 0 30px;
         }
         
         h1 {
-            font-size: 2.8rem;
+            font-size: 2.5rem;
             margin-bottom: 10px;
             background: linear-gradient(to right, #00dc82, #00c4cc);
             -webkit-background-clip: text;
@@ -43,42 +41,39 @@
         }
         
         .subtitle {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: #94a3b8;
             max-width: 600px;
             margin: 0 auto;
         }
         
-        .dashboard {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 25px;
-            margin-bottom: 30px;
-        }
-        
-        @media (max-width: 900px) {
-            .dashboard {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        .card {
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
             background: rgba(30, 41, 59, 0.7);
             border-radius: 16px;
-            padding: 30px;
+            padding: 15px 25px;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+            margin-bottom: 25px;
+            gap: 20px;
+            position: relative; /* Added for z-index context */
+            z-index: 100; /* Ensure nav stays above table */
         }
         
-        .add-coin-form {
+        .nav-form {
             display: flex;
-            flex-direction: column;
+            gap: 15px;
+            flex-wrap: wrap;
+            flex: 1;
         }
         
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 0;
             position: relative;
+            min-width: 200px;
         }
         
         label {
@@ -86,49 +81,85 @@
             margin-bottom: 8px;
             font-weight: 500;
             color: #94a3b8;
-            font-size: 1rem;
+            font-size: 0.95rem;
         }
         
         input, select {
             width: 100%;
-            padding: 14px 16px;
+            padding: 12px 16px;
             border-radius: 12px;
             background: rgba(15, 23, 42, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: #e2e8f0;
-            font-size: 1.05rem;
+            font-size: 1rem;
             appearance: none;
         }
         
-        select {
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 1rem center;
-            background-size: 1em;
+        .symbol-search-container {
+            position: relative;
+        }
+        
+        .symbol-search-input {
             padding-right: 2.5rem;
         }
         
-        input:focus, select:focus {
-            outline: none;
-            border-color: #00dc82;
-            box-shadow: 0 0 0 3px rgba(0, 220, 130, 0.2);
+        .symbol-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            max-height: 300px;
+            overflow-y: auto;
+            background: rgba(30, 41, 59, 0.95);
+            border-radius: 0 0 12px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: none;
+            z-index: 1000; /* Increased z-index to appear above everything */
+            display: none;
+            box-sizing: border-box;
+            margin-top: 2px;
+        }
+        
+        .symbol-dropdown.show {
+            display: block;
+        }
+        
+        .symbol-option {
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .symbol-option:hover {
+            background: rgba(15, 23, 42, 0.8);
+        }
+        
+        .symbol-option .symbol {
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+        
+        .symbol-option .name {
+            font-size: 0.9rem;
+            color: #94a3b8;
         }
         
         .btn {
             background: linear-gradient(to right, #00dc82, #00c4cc);
             color: #0f172a;
             border: none;
-            padding: 15px 25px;
+            padding: 12px 20px;
             border-radius: 12px;
             font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             transition: all 0.3s ease;
-            font-size: 1.05rem;
-            margin-top: 10px;
+            font-size: 1rem;
+            height: fit-content;
+            align-self: flex-end;
         }
         
         .btn:hover {
@@ -138,30 +169,52 @@
         
         .btn.export {
             background: linear-gradient(to right, #6366f1, #8b5cf6);
-            width: 100%;
-            margin-top: 20px;
         }
         
         .btn.export:hover {
             box-shadow: 0 7px 20px rgba(99, 102, 241, 0.4);
         }
         
+        .btn.clear {
+            background: linear-gradient(to right, #ef4444, #f97316);
+        }
+        
+        .btn.clear:hover {
+            box-shadow: 0 7px 20px rgba(239, 68, 68, 0.4);
+        }
+        
+        .nav-actions {
+            display: flex;
+            gap: 15px;
+            align-self: flex-end;
+            margin-top: auto;
+        }
+        
         .table-container {
-            overflow-x: auto;
             border-radius: 16px;
             background: rgba(30, 41, 59, 0.7);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+            position: relative;
+            z-index: 90; /* Lower than nav-container */
+            overflow: hidden; /* For rounded corners */
+        }
+        
+        /* Mobile-friendly table wrapper */
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 16px 16px 0 0;
         }
         
         table {
             width: 100%;
             border-collapse: collapse;
+            min-width: 700px; /* Minimum width for table */
         }
         
         th, td {
-            padding: 18px 22px;
+            padding: 16px 20px;
             text-align: left;
         }
         
@@ -172,7 +225,7 @@
         th {
             font-weight: 600;
             color: #94a3b8;
-            font-size: 1.05rem;
+            font-size: 1rem;
         }
         
         tbody tr {
@@ -191,12 +244,12 @@
         .coin-info {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
         
         .coin-icon {
-            width: 42px;
-            height: 42px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             background: linear-gradient(135deg, #00dc82, #00c4cc);
             display: flex;
@@ -204,16 +257,16 @@
             justify-content: center;
             font-weight: 700;
             color: #0f172a;
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
         
         .coin-name {
             font-weight: 500;
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
         
         .coin-symbol {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: #94a3b8;
         }
         
@@ -227,12 +280,12 @@
         
         .actions {
             display: flex;
-            gap: 12px;
+            gap: 10px;
         }
         
         .action-btn {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             background: rgba(15, 23, 42, 0.6);
             display: flex;
@@ -253,19 +306,24 @@
             color: #ef4444;
         }
         
+        .status-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+        
         .price-update-indicator {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 10px;
-            color: #94a3b8;
-            margin-top: 25px;
-            font-size: 0.95rem;
+            gap: 8px;
         }
         
         .price-update-indicator .dot {
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
             background-color: #00dc82;
             animation: pulse 1.5s infinite;
@@ -280,11 +338,7 @@
         .last-updated {
             display: flex;
             align-items: center;
-            gap: 10px;
-            color: #94a3b8;
-            font-size: 0.95rem;
-            justify-content: center;
-            margin-top: 10px;
+            gap: 8px;
         }
         
         .last-updated i {
@@ -293,77 +347,8 @@
         
         .value-cell {
             font-weight: 500;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-family: 'Courier New', monospace;
-        }
-        
-        .status-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
-        }
-        
-        .api-status {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .api-status-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: #00dc82;
-        }
-        
-        .api-status-text {
-            font-size: 0.9rem;
-            color: #94a3b8;
-        }
-        
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: #00dc82;
-            animation: spin 1s ease-in-out infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        .price-change {
-            font-size: 0.9rem;
-            padding: 2px 8px;
-            border-radius: 4px;
-            margin-top: 4px;
-            display: inline-block;
-        }
-        
-        .price-change.positive {
-            background-color: rgba(0, 220, 130, 0.1);
-        }
-        
-        .price-change.negative {
-            background-color: rgba(239, 68, 68, 0.1);
-        }
-        
-        .symbol-select-wrapper {
-            position: relative;
-        }
-        
-        .symbol-select-wrapper::after {
-            content: "▼";
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #94a3b8;
-            pointer-events: none;
         }
         
         .portfolio-summary {
@@ -371,8 +356,8 @@
             justify-content: space-between;
             background: rgba(15, 23, 42, 0.8);
             border-radius: 12px;
-            padding: 20px;
-            margin-top: 20px;
+            padding: 18px;
+            margin: 20px;
         }
         
         .summary-item {
@@ -381,13 +366,13 @@
         }
         
         .summary-label {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: #94a3b8;
             margin-bottom: 5px;
         }
         
         .summary-value {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 700;
         }
         
@@ -415,6 +400,173 @@
         .smooth-update {
             transition: all 0.5s ease;
         }
+        
+        .loading {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #00dc82;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .api-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .api-status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #00dc82;
+        }
+        
+        .api-status-text {
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+        
+        .empty-portfolio {
+            text-align: center;
+            padding: 40px;
+            color: #94a3b8;
+        }
+        
+        .empty-portfolio i {
+            font-size: 2.5rem;
+            opacity: 0.3;
+            margin-bottom: 15px;
+        }
+        
+        .empty-portfolio h3 {
+            margin-bottom: 10px;
+            color: #e2e8f0;
+        }
+        
+        /* Enhanced mobile responsiveness */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-form {
+                width: 100%;
+                flex-direction: column;
+            }
+            
+            .form-group {
+                min-width: 100%;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .nav-actions {
+                width: 100%;
+                flex-direction: column;
+                align-self: center;
+            }
+            
+            th, td {
+                padding: 12px 15px;
+            }
+            
+            /* Mobile table adjustments */
+            .table-wrapper {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            table {
+                min-width: 100%;
+            }
+            
+            /* Stack status indicators on mobile */
+            .status-container {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            /* Stack portfolio summary on mobile */
+            .portfolio-summary {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            /* Adjust padding for smaller screens */
+            .container {
+                padding: 10px;
+            }
+            
+            header {
+                padding: 10px 0 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            /* Make buttons more touch-friendly */
+            .btn {
+                padding: 14px 20px;
+            }
+            
+            /* Adjust summary font sizes */
+            .summary-value {
+                font-size: 1.1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            /* Further adjustments for very small screens */
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .coin-info {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+            
+            .coin-icon {
+                width: 30px;
+                height: 30px;
+                font-size: 0.9rem;
+            }
+            
+            .coin-name, .coin-symbol {
+                font-size: 0.9rem;
+            }
+            
+            .value-cell {
+                font-size: 0.9rem;
+            }
+            
+            .action-btn {
+                width: 32px;
+                height: 32px;
+            }
+            
+            .portfolio-summary {
+                margin: 10px;
+                padding: 12px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -424,82 +576,62 @@
             <p class="subtitle">Track your cryptocurrency investments with live Binance prices</p>
         </header>
         
-        <div class="dashboard">
-            <div class="card">
-                <h2 style="margin-bottom: 25px; font-size: 1.6rem; color: #e2e8f0;">Add New Coin</h2>
-                <form class="add-coin-form" id="coinForm">
-                    <div class="form-group">
-                        <label for="coinSymbol">Coin Symbol</label>
-                        <select id="coinSymbol" required>
-                            <option value="">Select or type a symbol</option>
-                            <option value="BTC">Bitcoin (BTC)</option>
-                            <option value="ETH">Ethereum (ETH)</option>
-                            <option value="SOL">Solana (SOL)</option>
-                            <option value="BNB">Binance Coin (BNB)</option>
-                            <option value="XRP">Ripple (XRP)</option>
-                            <option value="ADA">Cardano (ADA)</option>
-                            <option value="DOGE">Dogecoin (DOGE)</option>
-                            <option value="DOT">Polkadot (DOT)</option>
-                            <option value="LTC">Litecoin (LTC)</option>
-                            <option value="MATIC">Polygon (MATIC)</option>
-                            <option value="AVAX">Avalanche (AVAX)</option>
-                            <option value="LINK">Chainlink (LINK)</option>
-                            <option value="UNI">Uniswap (UNI)</option>
-                            <option value="PEPE">Pepe (PEPE)</option>
-                            <option value="SYRUP">Syrup (SYRUP)</option>
-                            <option value="KAITO">Kaito (KAITO)</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="buyPrice">Buy Price (USDT)</label>
-                        <input type="number" step="0.00000001" id="buyPrice" placeholder="Enter buy price" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="quantity">Amount (Quantity)</label>
-                        <input type="number" step="0.00000001" id="quantity" placeholder="Enter amount" required value="1">
-                    </div>
-                    <button type="submit" class="btn">
-                        <i class="fas fa-plus"></i> Add Coin
-                    </button>
-                </form>
-                
-                <button class="btn export" id="exportBtn">
-                    <i class="fas fa-file-export"></i> Export to CSV
-                </button>
-                
-                <div class="api-status" style="margin-top: 20px;">
-                    <div class="api-status-dot"></div>
-                    <div class="api-status-text">Connected to Binance API</div>
+        <div class="nav-container">
+            <form class="nav-form" id="coinForm">
+                <div class="form-group symbol-search-container">
+                    <label for="coinSymbol">Coin Symbol</label>
+                    <input type="text" id="coinSymbol" class="symbol-search-input" placeholder="Search or type symbol" required>
+                    <div class="symbol-dropdown" id="symbolDropdown"></div>
                 </div>
-            </div>
+                <div class="form-group">
+                    <label for="buyPrice">Buy Price (USDT)</label>
+                    <input type="number" step="0.00000001" id="buyPrice" placeholder="Enter buy price" required>
+                </div>
+                <div class="form-group">
+                    <label for="quantity">Amount</label>
+                    <input type="number" step="0.00000001" id="quantity" placeholder="Enter amount" required value="1">
+                </div>
+                <button type="submit" class="btn">
+                    <i class="fas fa-plus"></i> Add Coin
+                </button>
+            </form>
             
-            <div class="table-container">
-                <table id="portfolioTable">
-                    <thead>
-                        <tr>
-                            <th>Symbol</th>
-                            <th>Buy Price (USDT)</th>
-                            <th>Amount</th>
-                            <th>Current Price (USDT)</th>
-                            <th>Value (USDT)</th>
-                            <th>Gain/Loss (USDT)</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="portfolioBody">
-                        <!-- Portfolio data will be loaded here -->
-                    </tbody>
-                </table>
-                
-                <div class="portfolio-summary">
-                    <div class="summary-item">
-                        <div class="summary-label">Portfolio Value</div>
-                        <div class="summary-value portfolio-value" id="portfolioValue">$0.00</div>
-                    </div>
-                    <div class="summary-item">
-                        <div class="summary-label">Total Gain/Loss</div>
-                        <div class="summary-value" id="totalGainLoss">$0.00</div>
-                    </div>
+            <div class="nav-actions">
+                <button class="btn export" id="exportBtn">
+                    <i class="fas fa-file-export"></i> Export
+                </button>
+                <button class="btn clear" id="clearBtn">
+                    <i class="fas fa-trash-alt"></i> Clear
+                </button>
+            </div>
+        </div>
+        
+        <div class="table-container">
+            <table id="portfolioTable">
+                <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Buy Price (USDT)</th>
+                        <th>Amount</th>
+                        <th>Current Price (USDT)</th>
+                        <th>Value (USDT)</th>
+                        <th>Gain/Loss (USDT)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="portfolioBody">
+                    <!-- Portfolio data will be loaded here -->
+                </tbody>
+            </table>
+            
+            <div class="portfolio-summary">
+                <div class="summary-item">
+                    <div class="summary-label">Portfolio Value</div>
+                    <div class="summary-value portfolio-value" id="portfolioValue">$0.00</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Total Gain/Loss</div>
+                    <div class="summary-value" id="totalGainLoss">$0.00</div>
                 </div>
             </div>
         </div>
@@ -514,86 +646,165 @@
                 <i class="fas fa-sync-alt"></i>
                 <span id="lastUpdated">Last updated: Just now</span>
             </div>
+            
+            <div class="api-status">
+                <div class="api-status-dot"></div>
+                <div class="api-status-text">Connected to Binance API</div>
+            </div>
         </div>
     </div>
     
     <script>
         // Database for coins
         let portfolio = [];
-        let coinCells = {};
+        
+        // Available symbols with names
+        const symbolData = [
+            { symbol: "BTC", name: "Bitcoin" },
+            { symbol: "ETH", name: "Ethereum" },
+            { symbol: "SOL", name: "Solana" },
+            { symbol: "BNB", name: "Binance Coin" },
+            { symbol: "XRP", name: "Ripple" },
+            { symbol: "ADA", name: "Cardano" },
+            { symbol: "DOGE", name: "Dogecoin" },
+            { symbol: "DOT", name: "Polkadot" },
+            { symbol: "LTC", name: "Litecoin" },
+            { symbol: "MATIC", name: "Polygon" },
+            { symbol: "AVAX", name: "Avalanche" },
+            { symbol: "LINK", name: "Chainlink" },
+            { symbol: "UNI", name: "Uniswap" },
+            { symbol: "PEPE", name: "Pepe" },
+            { symbol: "SYRUP", name: "Syrup" },
+            { symbol: "KAITO", name: "Kaito" },
+            { symbol: "USDT", name: "Tether" },
+            { symbol: "USDC", name: "USD Coin" },
+            { symbol: "BCH", name: "Bitcoin Cash" },
+            { symbol: "XLM", name: "Stellar" },
+            { symbol: "WBTC", name: "Wrapped Bitcoin" },
+            { symbol: "ETC", name: "Ethereum Classic" },
+            { symbol: "AAVE", name: "Aave" },
+            { symbol: "EOS", name: "EOS" },
+            { symbol: "XMR", name: "Monero" },
+            { symbol: "TRX", name: "TRON" },
+            { symbol: "XTZ", name: "Tezos" },
+            { symbol: "SUSHI", name: "SushiSwap" },
+            { symbol: "MKR", name: "Maker" },
+            { symbol: "COMP", name: "Compound" },
+            { symbol: "YFI", name: "Yearn.finance" },
+            { symbol: "ATOM", name: "Cosmos" },
+            { symbol: "VET", name: "VeChain" },
+            { symbol: "THETA", name: "Theta Network" },
+            { symbol: "FIL", name: "Filecoin" },
+            { symbol: "NEO", name: "NEO" },
+            { symbol: "ALGO", name: "Algorand" },
+            { symbol: "KSM", name: "Kusama" },
+            { symbol: "DASH", name: "Dash" },
+            { symbol: "ZEC", name: "Zcash" },
+            { symbol: "ENJ", name: "Enjin Coin" },
+            { symbol: "BAT", name: "Basic Attention Token" },
+            { symbol: "MANA", name: "Decentraland" },
+            { symbol: "ZIL", name: "Zilliqa" },
+            { symbol: "QTUM", name: "Qtum" },
+            { symbol: "ICX", name: "ICON" },
+            { symbol: "OMG", name: "OMG Network" },
+            { symbol: "SNX", name: "Synthetix" },
+            { symbol: "GRT", name: "The Graph" },
+            { symbol: "CRV", name: "Curve DAO Token" },
+            { symbol: "BAND", name: "Band Protocol" },
+            { symbol: "REN", name: "Ren" },
+            { symbol: "UMA", name: "UMA" },
+            { symbol: "BAL", name: "Balancer" },
+            { symbol: "REP", name: "Augur" },
+            { symbol: "NMR", name: "Numeraire" },
+            { symbol: "OXT", name: "Orchid" },
+            { symbol: "KNC", name: "Kyber Network" },
+            { symbol: "ANT", name: "Aragon" }
+        ];
         
         // DOM elements
         const coinForm = document.getElementById('coinForm');
         const coinSymbolInput = document.getElementById('coinSymbol');
+        const symbolDropdown = document.getElementById('symbolDropdown');
         const buyPriceInput = document.getElementById('buyPrice');
         const quantityInput = document.getElementById('quantity');
         const portfolioBody = document.getElementById('portfolioBody');
         const exportBtn = document.getElementById('exportBtn');
+        const clearBtn = document.getElementById('clearBtn');
         const lastUpdatedEl = document.getElementById('lastUpdated');
         const portfolioValueEl = document.getElementById('portfolioValue');
         const totalGainLossEl = document.getElementById('totalGainLoss');
         
-        // Symbol to name mapping
-        const nameMap = {
-            "BTC": "Bitcoin",
-            "ETH": "Ethereum",
-            "SOL": "Solana",
-            "BNB": "Binance Coin",
-            "XRP": "Ripple",
-            "ADA": "Cardano",
-            "DOGE": "Dogecoin",
-            "DOT": "Polkadot",
-            "LTC": "Litecoin",
-            "LINK": "Chainlink",
-            "BCH": "Bitcoin Cash",
-            "XLM": "Stellar",
-            "USDT": "Tether",
-            "USDC": "USD Coin",
-            "UNI": "Uniswap",
-            "WBTC": "Wrapped Bitcoin",
-            "MATIC": "Polygon",
-            "ETC": "Ethereum Classic",
-            "AAVE": "Aave",
-            "EOS": "EOS",
-            "XMR": "Monero",
-            "TRX": "TRON",
-            "XTZ": "Tezos",
-            "SUSHI": "SushiSwap",
-            "MKR": "Maker",
-            "COMP": "Compound",
-            "YFI": "Yearn.finance",
-            "ATOM": "Cosmos",
-            "VET": "VeChain",
-            "THETA": "Theta Network",
-            "FIL": "Filecoin",
-            "NEO": "NEO",
-            "ALGO": "Algorand",
-            "KSM": "Kusama",
-            "DASH": "Dash",
-            "ZEC": "Zcash",
-            "ENJ": "Enjin Coin",
-            "BAT": "Basic Attention Token",
-            "MANA": "Decentraland",
-            "ZIL": "Zilliqa",
-            "QTUM": "Qtum",
-            "ICX": "ICON",
-            "OMG": "OMG Network",
-            "SNX": "Synthetix",
-            "GRT": "The Graph",
-            "CRV": "Curve DAO Token",
-            "BAND": "Band Protocol",
-            "REN": "Ren",
-            "UMA": "UMA",
-            "BAL": "Balancer",
-            "REP": "Augur",
-            "NMR": "Numeraire",
-            "OXT": "Orchid",
-            "KNC": "Kyber Network",
-            "ANT": "Aragon",
-            "SYRUP": "Syrup",
-            "PEPE": "Pepe",
-            "KAITO": "Kaito"
-        };
+        // Initialize symbol search functionality
+        function initSymbolSearch() {
+            coinSymbolInput.addEventListener('input', function() {
+                const searchTerm = this.value.trim().toUpperCase();
+                symbolDropdown.innerHTML = '';
+                
+                if (searchTerm.length > 0) {
+                    const filteredSymbols = symbolData.filter(item => 
+                        item.symbol.includes(searchTerm) || 
+                        item.name.toUpperCase().includes(searchTerm)
+                    ).slice(0, 10);
+                    
+                    if (filteredSymbols.length > 0) {
+                        filteredSymbols.forEach(item => {
+                            const option = document.createElement('div');
+                            option.className = 'symbol-option';
+                            option.innerHTML = `
+                                <div class="symbol">${item.symbol}</div>
+                                <div class="name">${item.name}</div>
+                            `;
+                            option.addEventListener('click', function() {
+                                coinSymbolInput.value = item.symbol;
+                                symbolDropdown.classList.remove('show');
+                                buyPriceInput.focus();
+                            });
+                            symbolDropdown.appendChild(option);
+                        });
+                        symbolDropdown.classList.add('show');
+                    } else {
+                        symbolDropdown.classList.remove('show');
+                    }
+                } else {
+                    symbolDropdown.classList.remove('show');
+                }
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!coinSymbolInput.contains(e.target) && !symbolDropdown.contains(e.target)) {
+                    symbolDropdown.classList.remove('show');
+                }
+            });
+        }
+        
+        // Save portfolio to localStorage
+        function savePortfolio() {
+            localStorage.setItem('cryptoPortfolio', JSON.stringify(portfolio));
+        }
+        
+        // Load portfolio from localStorage
+        function loadPortfolio() {
+            const savedPortfolio = localStorage.getItem('cryptoPortfolio');
+            if (savedPortfolio) {
+                portfolio = JSON.parse(savedPortfolio);
+                // Fetch current prices for all loaded coins
+                portfolio.forEach(coin => {
+                    coin.loading = true;
+                    fetchBinancePrice(coin.symbol, coin.id);
+                });
+                renderPortfolio();
+            }
+        }
+        
+        // Clear all portfolio data
+        function clearPortfolio() {
+            if (confirm('Are you sure you want to clear your entire portfolio? This cannot be undone.')) {
+                portfolio = [];
+                localStorage.removeItem('cryptoPortfolio');
+                renderPortfolio();
+            }
+        }
         
         // Format prices with appropriate decimals
         function formatPrice(price) {
@@ -623,7 +834,6 @@
         function calculatePortfolioSummary() {
             let totalValue = 0;
             let totalGainLoss = 0;
-            let totalInvested = 0;
             
             portfolio.forEach(coin => {
                 const value = coin.currentPrice * coin.quantity;
@@ -631,7 +841,6 @@
                 const gainLoss = value - invested;
                 
                 totalValue += value;
-                totalInvested += invested;
                 totalGainLoss += gainLoss;
             });
             
@@ -658,10 +867,12 @@
             if (portfolio.length === 0) {
                 portfolioBody.innerHTML = `
                     <tr>
-                        <td colspan="7" style="text-align: center; padding: 40px; color: #94a3b8;">
-                            <i class="fas fa-coins" style="font-size: 3rem; opacity: 0.3; margin-bottom: 15px;"></i>
-                            <h3>Your portfolio is empty</h3>
-                            <p>Add your first cryptocurrency to start tracking</p>
+                        <td colspan="7">
+                            <div class="empty-portfolio">
+                                <i class="fas fa-coins"></i>
+                                <h3>Your portfolio is empty</h3>
+                                <p>Add your first cryptocurrency to start tracking</p>
+                            </div>
                         </td>
                     </tr>
                 `;
@@ -720,7 +931,8 @@
         
         // Add new coin
         function addCoin(symbol, buyPrice, quantity) {
-            const name = nameMap[symbol.toUpperCase()] || symbol;
+            const symbolDataItem = symbolData.find(item => item.symbol === symbol.toUpperCase());
+            const name = symbolDataItem ? symbolDataItem.name : symbol;
             
             const newCoin = {
                 id: portfolio.length > 0 ? Math.max(...portfolio.map(c => c.id)) + 1 : 1,
@@ -733,6 +945,7 @@
             };
             
             portfolio.push(newCoin);
+            savePortfolio();
             renderPortfolio();
             
             // Fetch actual price from Binance
@@ -742,6 +955,7 @@
         // Delete coin
         function deleteCoin(coinId) {
             portfolio = portfolio.filter(coin => coin.id !== coinId);
+            savePortfolio();
             renderPortfolio();
         }
         
@@ -765,6 +979,7 @@
                 if (coinIndex !== -1) {
                     portfolio[coinIndex].currentPrice = price;
                     portfolio[coinIndex].loading = false;
+                    savePortfolio();
                     
                     // Smooth update animation
                     const currentPriceCell = document.getElementById(`current-price-${coinId}`);
@@ -804,6 +1019,7 @@
                     const change = (Math.random() * 0.1) - 0.05; // -5% to +5%
                     portfolio[coinIndex].currentPrice = portfolio[coinIndex].buyPrice * (1 + change);
                     portfolio[coinIndex].loading = false;
+                    savePortfolio();
                     renderPortfolio();
                 }
             }
@@ -864,23 +1080,30 @@
                 coinSymbolInput.value = '';
                 buyPriceInput.value = '';
                 quantityInput.value = '1';
+                coinSymbolInput.focus();
             }
         });
         
         exportBtn.addEventListener('click', exportToCSV);
-        
-        // Initialize with sample portfolio
-        function initializeSamplePortfolio() {
-            // Add sample coins
-            addCoin("SOL", "148.95", "2");
-            addCoin("SYRUP", "0.4418", "500");
-            addCoin("PEPE", "0.00001237", "1000000");
-            addCoin("KAITO", "1.8162", "100");
-        }
+        clearBtn.addEventListener('click', clearPortfolio);
         
         // Initialize
-        initializeSamplePortfolio();
-        updateLastUpdated();
+        function initialize() {
+            initSymbolSearch();
+            loadPortfolio();
+            
+            // If no saved portfolio, initialize with sample
+            if (portfolio.length === 0) {
+                addCoin("SOL", "148.95", "2");
+                addCoin("SYRUP", "0.4418", "500");
+                addCoin("PEPE", "0.00001237", "1000000");
+                addCoin("KAITO", "1.8162", "100");
+            }
+            
+            updateLastUpdated();
+        }
+        
+        initialize();
         
         // Update prices every 5 seconds
         setInterval(updateAllPrices, 5000);
