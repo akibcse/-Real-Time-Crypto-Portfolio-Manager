@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Real-Time Crypto Portfolio Manager</title>
+    <title>Advanced Crypto Portfolio Manager</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://s3.tradingview.com/tv.js"></script>
     <style>
         * {
             margin: 0;
@@ -59,8 +61,8 @@
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
             margin-bottom: 25px;
             gap: 20px;
-            position: relative; /* Added for z-index context */
-            z-index: 100; /* Ensure nav stays above table */
+            position: relative;
+            z-index: 100;
         }
         
         .nav-form {
@@ -114,7 +116,7 @@
             border-radius: 0 0 12px 12px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-top: none;
-            z-index: 1000; /* Increased z-index to appear above everything */
+            z-index: 1000;
             display: none;
             box-sizing: border-box;
             margin-top: 2px;
@@ -175,6 +177,14 @@
             box-shadow: 0 7px 20px rgba(99, 102, 241, 0.4);
         }
         
+        .btn.import {
+            background: linear-gradient(to right, #3b82f6, #60a5fa);
+        }
+        
+        .btn.import:hover {
+            box-shadow: 0 7px 20px rgba(59, 130, 246, 0.4);
+        }
+        
         .btn.clear {
             background: linear-gradient(to right, #ef4444, #f97316);
         }
@@ -197,11 +207,11 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
             position: relative;
-            z-index: 90; /* Lower than nav-container */
-            overflow: hidden; /* For rounded corners */
+            z-index: 90;
+            overflow: hidden;
+            margin-bottom: 25px;
         }
         
-        /* Mobile-friendly table wrapper */
         .table-wrapper {
             overflow-x: auto;
             border-radius: 16px 16px 0 0;
@@ -210,7 +220,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 700px; /* Minimum width for table */
+            min-width: 700px;
         }
         
         th, td {
@@ -313,6 +323,7 @@
             padding: 15px 20px;
             color: #94a3b8;
             font-size: 0.9rem;
+            margin-bottom: 25px;
         }
         
         .price-update-indicator {
@@ -450,6 +461,150 @@
             color: #e2e8f0;
         }
         
+        /* New chart section styles */
+        .charts-section {
+            background: rgba(30, 41, 59, 0.7);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+        }
+        
+        .charts-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .charts-title {
+            font-size: 1.4rem;
+            background: linear-gradient(to right, #00dc82, #00c4cc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .chart-toggle {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .chart-btn {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .chart-btn.active {
+            background: linear-gradient(to right, #00dc82, #00c4cc);
+            color: #0f172a;
+            font-weight: 600;
+        }
+        
+        .chart-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .chart-box {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 12px;
+            padding: 15px;
+            height: 300px;
+        }
+        
+        .chart-title {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            color: #94a3b8;
+        }
+        
+        .chart-wrapper {
+            position: relative;
+            height: calc(100% - 30px);
+        }
+        
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+        
+        /* TradingView section */
+        .tradingview-section {
+            background: rgba(30, 41, 59, 0.7);
+            border-radius: 16px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+        }
+        
+        .tradingview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .tradingview-title {
+            font-size: 1.4rem;
+            background: linear-gradient(to right, #00dc82, #00c4cc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .symbol-selector {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .symbol-selector label {
+            margin-bottom: 0;
+            color: #94a3b8;
+        }
+        
+        .symbol-selector select {
+            min-width: 120px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e2e8f0;
+        }
+        
+        .tradingview-container {
+            height: 500px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        /* File import */
+        .import-container {
+            position: relative;
+        }
+        
+        #fileInput {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
         /* Enhanced mobile responsiveness */
         @media (max-width: 768px) {
             .nav-container {
@@ -480,7 +635,6 @@
                 padding: 12px 15px;
             }
             
-            /* Mobile table adjustments */
             .table-wrapper {
                 overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
@@ -490,20 +644,17 @@
                 min-width: 100%;
             }
             
-            /* Stack status indicators on mobile */
             .status-container {
                 flex-direction: column;
                 gap: 15px;
                 align-items: flex-start;
             }
             
-            /* Stack portfolio summary on mobile */
             .portfolio-summary {
                 flex-direction: column;
                 gap: 20px;
             }
             
-            /* Adjust padding for smaller screens */
             .container {
                 padding: 10px;
             }
@@ -520,19 +671,28 @@
                 font-size: 1rem;
             }
             
-            /* Make buttons more touch-friendly */
             .btn {
                 padding: 14px 20px;
             }
             
-            /* Adjust summary font sizes */
             .summary-value {
                 font-size: 1.1rem;
+            }
+            
+            .chart-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .chart-box {
+                height: 250px;
+            }
+            
+            .tradingview-container {
+                height: 350px;
             }
         }
         
         @media (max-width: 480px) {
-            /* Further adjustments for very small screens */
             h1 {
                 font-size: 1.8rem;
             }
@@ -566,14 +726,19 @@
                 margin: 10px;
                 padding: 12px;
             }
+            
+            .charts-header, .tradingview-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Real-Time Crypto Portfolio Manager</h1>
-            <p class="subtitle">Track your cryptocurrency investments with live Binance prices</p>
+            <h1>Advanced Crypto Portfolio Manager</h1>
+            <p class="subtitle">Track your cryptocurrency investments with live prices, charts, and trading strategies</p>
         </header>
         
         <div class="nav-container">
@@ -597,6 +762,12 @@
             </form>
             
             <div class="nav-actions">
+                <div class="import-container">
+                    <button class="btn import" id="importBtn">
+                        <i class="fas fa-file-import"></i> Import
+                    </button>
+                    <input type="file" id="fileInput" accept=".csv">
+                </div>
                 <button class="btn export" id="exportBtn">
                     <i class="fas fa-file-export"></i> Export
                 </button>
@@ -636,6 +807,46 @@
             </div>
         </div>
         
+        <div class="charts-section">
+            <div class="charts-header">
+                <h2 class="charts-title">Portfolio Analytics</h2>
+                <div class="chart-toggle">
+                    <button class="chart-btn active" data-chart="allocation">Allocation</button>
+                    <button class="chart-btn" data-chart="performance">Performance</button>
+                    <button class="chart-btn" data-chart="gainLoss">Gain/Loss</button>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <div class="chart-box">
+                    <div class="chart-title">Portfolio Allocation</div>
+                    <div class="chart-wrapper">
+                        <canvas id="allocationChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-box">
+                    <div class="chart-title" id="activeChartTitle">Portfolio Value Trend</div>
+                    <div class="chart-wrapper">
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tradingview-section">
+            <div class="tradingview-header">
+                <h2 class="tradingview-title">TradingView Strategy Analysis</h2>
+                <div class="symbol-selector">
+                    <label for="symbolSelect">Select Coin:</label>
+                    <select id="symbolSelect">
+                        <!-- Options will be populated dynamically -->
+                    </select>
+                </div>
+            </div>
+            
+            <div class="tradingview-container" id="tradingview-chart"></div>
+        </div>
+        
         <div class="status-container">
             <div class="price-update-indicator">
                 <div class="dot"></div>
@@ -657,6 +868,7 @@
     <script>
         // Database for coins
         let portfolio = [];
+        let historicalData = [];
         
         // Available symbols with names
         const symbolData = [
@@ -729,10 +941,20 @@
         const quantityInput = document.getElementById('quantity');
         const portfolioBody = document.getElementById('portfolioBody');
         const exportBtn = document.getElementById('exportBtn');
+        const importBtn = document.getElementById('importBtn');
+        const fileInput = document.getElementById('fileInput');
         const clearBtn = document.getElementById('clearBtn');
         const lastUpdatedEl = document.getElementById('lastUpdated');
         const portfolioValueEl = document.getElementById('portfolioValue');
         const totalGainLossEl = document.getElementById('totalGainLoss');
+        const symbolSelect = document.getElementById('symbolSelect');
+        const chartBtns = document.querySelectorAll('.chart-btn');
+        const activeChartTitle = document.getElementById('activeChartTitle');
+        
+        // Chart instances
+        let allocationChart;
+        let performanceChart;
+        let activeChart = 'performance';
         
         // Initialize symbol search functionality
         function initSymbolSearch() {
@@ -803,6 +1025,8 @@
                 portfolio = [];
                 localStorage.removeItem('cryptoPortfolio');
                 renderPortfolio();
+                updateCharts();
+                updateTradingViewSymbols();
             }
         }
         
@@ -858,6 +1082,21 @@
             const gainLossFormatted = formatGainLoss(summary.totalGainLoss);
             totalGainLossEl.textContent = `$${gainLossFormatted.text}`;
             totalGainLossEl.className = `summary-value ${gainLossFormatted.className}`;
+            
+            // Record historical data for charting
+            const now = new Date();
+            historicalData.push({
+                time: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                value: summary.totalValue,
+                gainLoss: summary.totalGainLoss
+            });
+            
+            // Keep only last 10 data points
+            if (historicalData.length > 10) {
+                historicalData.shift();
+            }
+            
+            updateCharts();
         }
         
         // Render portfolio table
@@ -927,6 +1166,7 @@
             });
             
             updatePortfolioSummary();
+            updateTradingViewSymbols();
         }
         
         // Add new coin
@@ -1068,6 +1308,307 @@
             document.body.removeChild(link);
         }
         
+        // Import from CSV
+        function importFromCSV(file) {
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                const contents = e.target.result;
+                const lines = contents.split('\n');
+                let importedCoins = [];
+                
+                // Skip header line
+                for (let i = 1; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    if (line) {
+                        const [symbol, name, buyPrice, quantity, currentPrice] = line.split(',');
+                        if (symbol && buyPrice && quantity) {
+                            importedCoins.push({
+                                symbol: symbol.toUpperCase(),
+                                name: name,
+                                buyPrice: parseFloat(buyPrice),
+                                quantity: parseFloat(quantity),
+                                currentPrice: parseFloat(currentPrice)
+                            });
+                        }
+                    }
+                }
+                
+                if (importedCoins.length > 0) {
+                    // Add imported coins to portfolio
+                    importedCoins.forEach(coin => {
+                        const existingCoin = portfolio.find(c => c.symbol === coin.symbol);
+                        if (existingCoin) {
+                            // Update existing coin
+                            existingCoin.quantity += coin.quantity;
+                            existingCoin.buyPrice = (existingCoin.buyPrice + coin.buyPrice) / 2;
+                        } else {
+                            // Add new coin
+                            portfolio.push({
+                                id: portfolio.length > 0 ? Math.max(...portfolio.map(c => c.id)) + 1 : 1,
+                                ...coin,
+                                loading: true
+                            });
+                        }
+                    });
+                    
+                    savePortfolio();
+                    renderPortfolio();
+                    alert(`Successfully imported ${importedCoins.length} coin(s)`);
+                } else {
+                    alert('No valid data found in the CSV file.');
+                }
+            };
+            
+            reader.onerror = function() {
+                alert('Error reading file');
+            };
+            
+            reader.readAsText(file);
+        }
+        
+        // Update TradingView symbols dropdown
+        function updateTradingViewSymbols() {
+            symbolSelect.innerHTML = '';
+            
+            // Add all symbols from portfolio
+            portfolio.forEach(coin => {
+                const option = document.createElement('option');
+                option.value = coin.symbol;
+                option.textContent = `${coin.symbol} (${coin.name})`;
+                symbolSelect.appendChild(option);
+            });
+            
+            // Add popular symbols if portfolio is empty
+            if (portfolio.length === 0) {
+                const popularSymbols = ['BTC', 'ETH', 'SOL', 'BNB', 'XRP', 'ADA', 'DOGE'];
+                popularSymbols.forEach(symbol => {
+                    const coin = symbolData.find(c => c.symbol === symbol);
+                    if (coin) {
+                        const option = document.createElement('option');
+                        option.value = symbol;
+                        option.textContent = `${symbol} (${coin.name})`;
+                        symbolSelect.appendChild(option);
+                    }
+                });
+            }
+            
+            // Initialize TradingView chart
+            initTradingView(symbolSelect.value);
+        }
+        
+        // Initialize TradingView chart
+        function initTradingView(symbol) {
+            const binanceSymbol = symbol === 'PEPE' ? 'PEPEUSDT' : `${symbol}USDT`;
+            
+            new TradingView.widget({
+                "autosize": true,
+                "symbol": `BINANCE:${binanceSymbol}`,
+                "interval": "60",
+                "timezone": "Etc/UTC",
+                "theme": "dark",
+                "style": "1",
+                "locale": "en",
+                "toolbar_bg": "#0f172a",
+                "enable_publishing": false,
+                "hide_top_toolbar": false,
+                "hide_legend": false,
+                "save_image": false,
+                "container_id": "tradingview-chart",
+                "studies": [
+                    "RSI@tv-basicstudies",
+                    "MACD@tv-basicstudies",
+                    "StochasticRSI@tv-basicstudies",
+                    "MASimple@tv-basicstudies"
+                ],
+                "overrides": {
+                    "paneProperties.background": "#0f172a",
+                    "paneProperties.vertGridProperties.color": "rgba(148, 163, 184, 0.1)",
+                    "paneProperties.horzGridProperties.color": "rgba(148, 163, 184, 0.1)",
+                    "symbolWatermarkProperties.transparency": 90,
+                    "scalesProperties.lineColor": "#94a3b8",
+                    "scalesProperties.textColor" : "#94a3b8"
+                },
+                "studies_overrides": {
+                    "rsi.display": "line",
+                    "rsi.linecolor": "#00dc82"
+                }
+            });
+        }
+        
+        // Update charts
+        function updateCharts() {
+            // Allocation Chart (Pie)
+            if (allocationChart) {
+                allocationChart.destroy();
+            }
+            
+            const allocationCtx = document.getElementById('allocationChart').getContext('2d');
+            
+            if (portfolio.length > 0) {
+                const labels = portfolio.map(coin => coin.symbol);
+                const data = portfolio.map(coin => coin.currentPrice * coin.quantity);
+                const backgroundColors = [
+                    '#00dc82', '#00c4cc', '#6366f1', '#8b5cf6', '#3b82f6', 
+                    '#60a5fa', '#ef4444', '#f97316', '#f59e0b', '#10b981'
+                ];
+                
+                allocationChart = new Chart(allocationCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: data,
+                            backgroundColor: backgroundColors,
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                                labels: {
+                                    color: '#94a3b8',
+                                    font: {
+                                        size: 11
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const value = context.parsed;
+                                        const percentage = Math.round((value / context.dataset.data.reduce((a, b) => a + b, 0)) * 100);
+                                        return `${context.label}: $${formatPrice(value)} (${percentage}%)`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            } else {
+                // Empty state for allocation chart
+                allocationChart = new Chart(allocationCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['No data'],
+                        datasets: [{
+                            data: [1],
+                            backgroundColor: ['rgba(148, 163, 184, 0.2)']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                enabled: false
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // Performance Chart (Line)
+            if (performanceChart) {
+                performanceChart.destroy();
+            }
+            
+            const performanceCtx = document.getElementById('performanceChart').getContext('2d');
+            
+            if (historicalData.length > 1) {
+                const labels = historicalData.map(d => d.time);
+                const dataValues = historicalData.map(d => activeChart === 'performance' ? d.value : d.gainLoss);
+                
+                performanceChart = new Chart(performanceCtx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: activeChart === 'performance' ? 'Portfolio Value (USDT)' : 'Gain/Loss (USDT)',
+                            data: dataValues,
+                            borderColor: activeChart === 'performance' ? '#00c4cc' : 
+                                         (dataValues[dataValues.length - 1] >= 0 ? '#00dc82' : '#ef4444'),
+                            backgroundColor: activeChart === 'performance' ? 'rgba(0, 196, 204, 0.1)' : 
+                                            (dataValues[dataValues.length - 1] >= 0 ? 'rgba(0, 220, 130, 0.1)' : 'rgba(239, 68, 68, 0.1)'),
+                            borderWidth: 2,
+                            pointBackgroundColor: activeChart === 'performance' ? '#00c4cc' : 
+                                                 (dataValues[dataValues.length - 1] >= 0 ? '#00dc82' : '#ef4444'),
+                            pointRadius: 4,
+                            pointHoverRadius: 6,
+                            tension: 0.3,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `${context.dataset.label}: $${formatPrice(context.parsed.y)}`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                grid: {
+                                    color: 'rgba(148, 163, 184, 0.1)'
+                                },
+                                ticks: {
+                                    color: '#94a3b8',
+                                    callback: function(value) {
+                                        return '$' + formatPrice(value);
+                                    }
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    color: 'rgba(148, 163, 184, 0.1)'
+                                },
+                                ticks: {
+                                    color: '#94a3b8'
+                                }
+                            }
+                        }
+                    }
+                });
+            } else {
+                // Empty state for performance chart
+                performanceChart = new Chart(performanceCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['No data'],
+                        datasets: [{
+                            label: 'Portfolio Value (USDT)',
+                            data: [0],
+                            borderColor: '#00c4cc',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            }
+        }
+        
         // Event listeners
         coinForm.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -1085,7 +1626,40 @@
         });
         
         exportBtn.addEventListener('click', exportToCSV);
+        
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                importFromCSV(this.files[0]);
+                this.value = ''; // Reset file input
+            }
+        });
+        
         clearBtn.addEventListener('click', clearPortfolio);
+        
+        // Chart toggle buttons
+        chartBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                chartBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                activeChart = this.getAttribute('data-chart');
+                
+                if (activeChart === 'allocation') {
+                    activeChartTitle.textContent = 'Portfolio Allocation';
+                } else if (activeChart === 'performance') {
+                    activeChartTitle.textContent = 'Portfolio Value Trend';
+                } else if (activeChart === 'gainLoss') {
+                    activeChartTitle.textContent = 'Gain/Loss Trend';
+                }
+                
+                updateCharts();
+            });
+        });
+        
+        // TradingView symbol selector
+        symbolSelect.addEventListener('change', function() {
+            initTradingView(this.value);
+        });
         
         // Initialize
         function initialize() {
@@ -1101,6 +1675,8 @@
             }
             
             updateLastUpdated();
+            updateCharts();
+            updateTradingViewSymbols();
         }
         
         initialize();
