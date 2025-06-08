@@ -1258,6 +1258,14 @@
                     fetchBinancePrice(coin.symbol, coin.id);
                 });
                 renderPortfolio();
+            } else {
+                // If no portfolio for this user, and if it's the demo user, initialize with sample
+                if (currentUser.username === 'demo') {
+                    addCoin("SOL", "148.95", "2");
+                    addCoin("SYRUP", "0.4418", "500");
+                    addCoin("PEPE", "0.00001237", "1000000");
+                    addCoin("KAITO", "1.8162", "100");
+                }
             }
         }
         
@@ -1939,7 +1947,28 @@
             }
         }
         
-        // User authentication functions
+        // Set logged in user and update UI
+        function setLoggedInUser(username) {
+            currentUser = { username };
+            
+            // Update UI
+            userName.textContent = username;
+            userIcon.textContent = username.charAt(0).toUpperCase();
+            
+            // Hide login modal, show main content
+            loginModal.style.display = 'none';
+            mainContent.style.display = 'block';
+            
+            // Load portfolio
+            loadPortfolio();
+            updateCharts();
+            updateTradingViewSymbols();
+            
+            // Save current user to localStorage (without password)
+            localStorage.setItem('currentUser', JSON.stringify({ username }));
+        }
+        
+        // User authentication
         function loginUser(username, password) {
             const users = JSON.parse(localStorage.getItem('cryptoUsers')) || {};
             
@@ -1953,28 +1982,7 @@
             }
             
             if (users[username] && users[username].password === password) {
-                currentUser = {
-                    username,
-                    portfolio: users[username].portfolio || []
-                };
-                
-                // Update UI
-                userName.textContent = username;
-                userIcon.textContent = username.charAt(0).toUpperCase();
-                
-                // Hide login modal, show main content
-                loginModal.style.display = 'none';
-                mainContent.style.display = 'block';
-                
-                // Load portfolio
-                portfolio = currentUser.portfolio;
-                loadPortfolio();
-                updateCharts();
-                updateTradingViewSymbols();
-                
-                // Save current user to localStorage
-                localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                
+                setLoggedInUser(username);
                 return true;
             }
             
@@ -1995,9 +2003,8 @@
             };
             
             localStorage.setItem('cryptoUsers', JSON.stringify(users));
-            
-            // Login the new user
-            return loginUser(username, password);
+            setLoggedInUser(username);
+            return true;
         }
         
         function logoutUser() {
@@ -2016,8 +2023,8 @@
         // Check if user is already logged in
         function checkLoginStatus() {
             const savedUser = JSON.parse(localStorage.getItem('currentUser'));
-            if (savedUser) {
-                loginUser(savedUser.username, savedUser.password);
+            if (savedUser && savedUser.username) {
+                setLoggedInUser(savedUser.username);
             }
         }
         
@@ -2109,14 +2116,6 @@
             symbolSelect.addEventListener('change', function() {
                 initTradingView(this.value);
             });
-            
-            // If no saved portfolio, initialize with sample
-            if (portfolio.length === 0) {
-                addCoin("SOL", "148.95", "2");
-                addCoin("SYRUP", "0.4418", "500");
-                addCoin("PEPE", "0.00001237", "1000000");
-                addCoin("KAITO", "1.8162", "100");
-            }
             
             updateLastUpdated();
             updateCharts();
