@@ -31,6 +31,60 @@
         header {
             text-align: center;
             padding: 20px 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-content {
+            flex: 1;
+        }
+        
+        .user-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(30, 41, 59, 0.7);
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .user-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00dc82, #00c4cc);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #0f172a;
+            font-size: 1rem;
+        }
+        
+        .user-name {
+            font-weight: 500;
+            font-size: 1rem;
+        }
+        
+        .logout-btn {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+        
+        .logout-btn:hover {
+            color: #00dc82;
         }
         
         h1 {
@@ -193,6 +247,30 @@
             box-shadow: 0 7px 20px rgba(239, 68, 68, 0.4);
         }
         
+        .btn.edit {
+            background: linear-gradient(to right, #f59e0b, #fbbf24);
+        }
+        
+        .btn.edit:hover {
+            box-shadow: 0 7px 20px rgba(245, 158, 11, 0.4);
+        }
+        
+        .btn.save {
+            background: linear-gradient(to right, #10b981, #34d399);
+        }
+        
+        .btn.save:hover {
+            box-shadow: 0 7px 20px rgba(16, 185, 129, 0.4);
+        }
+        
+        .btn.cancel {
+            background: linear-gradient(to right, #94a3b8, #cbd5e1);
+        }
+        
+        .btn.cancel:hover {
+            box-shadow: 0 7px 20px rgba(148, 163, 184, 0.4);
+        }
+        
         .nav-actions {
             display: flex;
             gap: 15px;
@@ -314,6 +392,11 @@
         .action-btn.delete:hover {
             background: rgba(239, 68, 68, 0.2);
             color: #ef4444;
+        }
+        
+        .action-btn.edit:hover {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
         }
         
         .status-container {
@@ -605,6 +688,90 @@
             cursor: pointer;
         }
         
+        /* Login Modal */
+        .login-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .login-container {
+            background: rgba(30, 41, 59, 0.9);
+            border-radius: 16px;
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        
+        .login-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            background: linear-gradient(to right, #00dc82, #00c4cc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .login-form .form-group {
+            min-width: 100%;
+            text-align: left;
+        }
+        
+        .login-form input {
+            width: 100%;
+        }
+        
+        .login-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .login-actions .btn {
+            flex: 1;
+        }
+        
+        .login-actions .btn.register {
+            background: linear-gradient(to right, #8b5cf6, #c084fc);
+        }
+        
+        .login-actions .btn.register:hover {
+            box-shadow: 0 7px 20px rgba(139, 92, 246, 0.4);
+        }
+        
+        .login-footer {
+            margin-top: 25px;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+        
+        .login-footer a {
+            color: #00c4cc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .login-footer a:hover {
+            color: #00dc82;
+            text-decoration: underline;
+        }
+        
         /* Enhanced mobile responsiveness */
         @media (max-width: 768px) {
             .nav-container {
@@ -660,7 +827,14 @@
             }
             
             header {
+                flex-direction: column;
+                gap: 15px;
                 padding: 10px 0 20px;
+            }
+            
+            .user-controls {
+                width: 100%;
+                justify-content: center;
             }
             
             h1 {
@@ -689,6 +863,14 @@
             
             .tradingview-container {
                 height: 350px;
+            }
+            
+            .login-container {
+                padding: 30px 20px;
+            }
+            
+            .login-actions {
+                flex-direction: column;
             }
         }
         
@@ -735,10 +917,49 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- Login Modal -->
+    <div class="login-modal" id="loginModal">
+        <div class="login-container">
+            <h2 class="login-title">Crypto Portfolio Manager</h2>
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Enter username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter password" required>
+                </div>
+                <div class="login-actions">
+                    <button type="submit" class="btn">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                    <button type="button" class="btn register" id="registerBtn">
+                        <i class="fas fa-user-plus"></i> Register
+                    </button>
+                </div>
+            </form>
+            <div class="login-footer">
+                <p>Demo account: user:demo | pass:demo123</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container" id="mainContent" style="display: none;">
         <header>
-            <h1>Advanced Crypto Portfolio Manager</h1>
-            <p class="subtitle">Track your cryptocurrency investments with live prices, charts, and trading strategies</p>
+            <div class="header-content">
+                <h1>Advanced Crypto Portfolio Manager</h1>
+                <p class="subtitle">Track your cryptocurrency investments with live prices, charts, and trading strategies</p>
+            </div>
+            <div class="user-controls">
+                <div class="user-info">
+                    <div class="user-icon" id="userIcon">U</div>
+                    <div class="user-name" id="userName">User</div>
+                    <button class="logout-btn" id="logoutBtn" title="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
         </header>
         
         <div class="nav-container">
@@ -869,6 +1090,7 @@
         // Database for coins
         let portfolio = [];
         let historicalData = [];
+        let currentUser = null;
         
         // Available symbols with names
         const symbolData = [
@@ -934,6 +1156,13 @@
         ];
         
         // DOM elements
+        const loginModal = document.getElementById('loginModal');
+        const mainContent = document.getElementById('mainContent');
+        const loginForm = document.getElementById('loginForm');
+        const registerBtn = document.getElementById('registerBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const userName = document.getElementById('userName');
+        const userIcon = document.getElementById('userIcon');
         const coinForm = document.getElementById('coinForm');
         const coinSymbolInput = document.getElementById('coinSymbol');
         const symbolDropdown = document.getElementById('symbolDropdown');
@@ -1002,14 +1231,27 @@
         
         // Save portfolio to localStorage
         function savePortfolio() {
-            localStorage.setItem('cryptoPortfolio', JSON.stringify(portfolio));
+            if (!currentUser) return;
+            
+            // Get all users
+            const users = JSON.parse(localStorage.getItem('cryptoUsers')) || {};
+            
+            // Update current user's portfolio
+            users[currentUser.username].portfolio = portfolio;
+            
+            // Save back to localStorage
+            localStorage.setItem('cryptoUsers', JSON.stringify(users));
         }
         
         // Load portfolio from localStorage
         function loadPortfolio() {
-            const savedPortfolio = localStorage.getItem('cryptoPortfolio');
-            if (savedPortfolio) {
-                portfolio = JSON.parse(savedPortfolio);
+            if (!currentUser) return;
+            
+            const users = JSON.parse(localStorage.getItem('cryptoUsers')) || {};
+            const userData = users[currentUser.username];
+            
+            if (userData && userData.portfolio) {
+                portfolio = userData.portfolio;
                 // Fetch current prices for all loaded coins
                 portfolio.forEach(coin => {
                     coin.loading = true;
@@ -1023,7 +1265,7 @@
         function clearPortfolio() {
             if (confirm('Are you sure you want to clear your entire portfolio? This cannot be undone.')) {
                 portfolio = [];
-                localStorage.removeItem('cryptoPortfolio');
+                savePortfolio();
                 renderPortfolio();
                 updateCharts();
                 updateTradingViewSymbols();
@@ -1147,7 +1389,10 @@
                     </td>
                     <td>
                         <div class="actions">
-                            <div class="action-btn delete" data-id="${coin.id}">
+                            <div class="action-btn edit" data-id="${coin.id}" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </div>
+                            <div class="action-btn delete" data-id="${coin.id}" title="Delete">
                                 <i class="fas fa-trash"></i>
                             </div>
                         </div>
@@ -1157,11 +1402,19 @@
                 portfolioBody.appendChild(row);
             });
             
-            // Add delete event listeners
+            // Add event listeners for actions
             document.querySelectorAll('.action-btn.delete').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const coinId = parseInt(this.getAttribute('data-id'));
                     deleteCoin(coinId);
+                });
+            });
+            
+            // Add edit event listeners
+            document.querySelectorAll('.action-btn.edit').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const coinId = parseInt(this.getAttribute('data-id'));
+                    editCoin(coinId);
                 });
             });
             
@@ -1190,6 +1443,83 @@
             
             // Fetch actual price from Binance
             fetchBinancePrice(newCoin.symbol, newCoin.id);
+        }
+        
+        // Edit coin
+        function editCoin(coinId) {
+            const coinIndex = portfolio.findIndex(coin => coin.id === coinId);
+            if (coinIndex === -1) return;
+            
+            const coin = portfolio[coinIndex];
+            const row = document.querySelector(`tr[data-id="${coinId}"]`);
+            
+            // Create edit form
+            const editForm = `
+                <td>
+                    <div class="coin-info">
+                        <div class="coin-icon">${coin.symbol.charAt(0)}</div>
+                        <div>
+                            <div class="coin-name">${coin.name}</div>
+                            <div class="coin-symbol">${coin.symbol}</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <input type="number" class="edit-buy-price" value="${coin.buyPrice}" step="0.00000001" style="width: 100%; padding: 8px; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #e2e8f0;">
+                </td>
+                <td>
+                    <input type="number" class="edit-quantity" value="${coin.quantity}" step="0.00000001" style="width: 100%; padding: 8px; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #e2e8f0;">
+                </td>
+                <td class="value-cell ${coin.currentPrice > coin.buyPrice ? 'positive' : 'negative'}" id="current-price-${coin.id}">
+                    ${coin.loading ? '<span class="loading"></span>' : formatPrice(coin.currentPrice)}
+                </td>
+                <td class="value-cell">${formatPrice(coin.currentPrice * coin.quantity)}</td>
+                <td>
+                    <div class="${coin.currentPrice > coin.buyPrice ? 'positive' : 'negative'} value-cell" id="gain-loss-${coin.id}">
+                        ${formatGainLoss(coin.currentPrice * coin.quantity - coin.buyPrice * coin.quantity).text}
+                    </div>
+                </td>
+                <td>
+                    <div class="actions">
+                        <button class="btn save" data-id="${coinId}" style="padding: 6px 12px; font-size: 0.9rem;">
+                            <i class="fas fa-save"></i>
+                        </button>
+                        <button class="btn cancel" data-id="${coinId}" style="padding: 6px 12px; font-size: 0.9rem;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </td>
+            `;
+            
+            // Create a new row for editing
+            const newRow = document.createElement('tr');
+            newRow.setAttribute('data-id', coinId);
+            newRow.classList.add('editing');
+            newRow.innerHTML = editForm;
+            
+            // Replace the existing row with the edit row
+            const existingRow = document.querySelector(`tr[data-id="${coinId}"]`);
+            existingRow.replaceWith(newRow);
+            
+            // Add save event listener
+            document.querySelector(`.btn.save[data-id="${coinId}"]`).addEventListener('click', function() {
+                const newBuyPrice = parseFloat(document.querySelector(`tr[data-id="${coinId}"] .edit-buy-price`).value);
+                const newQuantity = parseFloat(document.querySelector(`tr[data-id="${coinId}"] .edit-quantity`).value);
+                
+                if (!isNaN(newBuyPrice) && !isNaN(newQuantity) && newBuyPrice > 0 && newQuantity > 0) {
+                    coin.buyPrice = newBuyPrice;
+                    coin.quantity = newQuantity;
+                    savePortfolio();
+                    renderPortfolio();
+                } else {
+                    alert('Please enter valid values for buy price and quantity');
+                }
+            });
+            
+            // Add cancel event listener
+            document.querySelector(`.btn.cancel[data-id="${coinId}"]`).addEventListener('click', function() {
+                renderPortfolio();
+            });
         }
         
         // Delete coin
@@ -1609,62 +1939,176 @@
             }
         }
         
-        // Event listeners
-        coinForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const symbol = coinSymbolInput.value.trim();
-            const buyPrice = buyPriceInput.value.trim();
-            const quantity = quantityInput.value.trim();
+        // User authentication functions
+        function loginUser(username, password) {
+            const users = JSON.parse(localStorage.getItem('cryptoUsers')) || {};
             
-            if (symbol && buyPrice && quantity) {
-                addCoin(symbol, buyPrice, quantity);
-                coinSymbolInput.value = '';
-                buyPriceInput.value = '';
-                quantityInput.value = '1';
-                coinSymbolInput.focus();
+            // Create demo user if not exists
+            if (!users.demo) {
+                users.demo = {
+                    password: 'demo123',
+                    portfolio: []
+                };
+                localStorage.setItem('cryptoUsers', JSON.stringify(users));
             }
-        });
-        
-        exportBtn.addEventListener('click', exportToCSV);
-        
-        fileInput.addEventListener('change', function() {
-            if (this.files && this.files[0]) {
-                importFromCSV(this.files[0]);
-                this.value = ''; // Reset file input
-            }
-        });
-        
-        clearBtn.addEventListener('click', clearPortfolio);
-        
-        // Chart toggle buttons
-        chartBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                chartBtns.forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
+            
+            if (users[username] && users[username].password === password) {
+                currentUser = {
+                    username,
+                    portfolio: users[username].portfolio || []
+                };
                 
-                activeChart = this.getAttribute('data-chart');
+                // Update UI
+                userName.textContent = username;
+                userIcon.textContent = username.charAt(0).toUpperCase();
                 
-                if (activeChart === 'allocation') {
-                    activeChartTitle.textContent = 'Portfolio Allocation';
-                } else if (activeChart === 'performance') {
-                    activeChartTitle.textContent = 'Portfolio Value Trend';
-                } else if (activeChart === 'gainLoss') {
-                    activeChartTitle.textContent = 'Gain/Loss Trend';
-                }
+                // Hide login modal, show main content
+                loginModal.style.display = 'none';
+                mainContent.style.display = 'block';
                 
+                // Load portfolio
+                portfolio = currentUser.portfolio;
+                loadPortfolio();
                 updateCharts();
-            });
-        });
+                updateTradingViewSymbols();
+                
+                // Save current user to localStorage
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                
+                return true;
+            }
+            
+            return false;
+        }
         
-        // TradingView symbol selector
-        symbolSelect.addEventListener('change', function() {
-            initTradingView(this.value);
-        });
+        function registerUser(username, password) {
+            const users = JSON.parse(localStorage.getItem('cryptoUsers')) || {};
+            
+            if (users[username]) {
+                alert('Username already exists');
+                return false;
+            }
+            
+            users[username] = {
+                password,
+                portfolio: []
+            };
+            
+            localStorage.setItem('cryptoUsers', JSON.stringify(users));
+            
+            // Login the new user
+            return loginUser(username, password);
+        }
+        
+        function logoutUser() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            
+            // Hide main content, show login modal
+            mainContent.style.display = 'none';
+            loginModal.style.display = 'flex';
+            
+            // Reset form
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+        
+        // Check if user is already logged in
+        function checkLoginStatus() {
+            const savedUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (savedUser) {
+                loginUser(savedUser.username, savedUser.password);
+            }
+        }
         
         // Initialize
         function initialize() {
+            // Initialize login functionality
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const username = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value.trim();
+                
+                if (username && password) {
+                    if (loginUser(username, password)) {
+                        // Login successful
+                    } else {
+                        alert('Invalid username or password');
+                    }
+                }
+            });
+            
+            registerBtn.addEventListener('click', function() {
+                const username = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value.trim();
+                
+                if (username && password) {
+                    if (registerUser(username, password)) {
+                        // Registration successful
+                    }
+                } else {
+                    alert('Please enter both username and password');
+                }
+            });
+            
+            logoutBtn.addEventListener('click', logoutUser);
+            
+            // Check if user is already logged in
+            checkLoginStatus();
+            
+            // Initialize portfolio functionality
             initSymbolSearch();
-            loadPortfolio();
+            
+            coinForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const symbol = coinSymbolInput.value.trim();
+                const buyPrice = buyPriceInput.value.trim();
+                const quantity = quantityInput.value.trim();
+                
+                if (symbol && buyPrice && quantity) {
+                    addCoin(symbol, buyPrice, quantity);
+                    coinSymbolInput.value = '';
+                    buyPriceInput.value = '';
+                    quantityInput.value = '1';
+                    coinSymbolInput.focus();
+                }
+            });
+            
+            exportBtn.addEventListener('click', exportToCSV);
+            
+            fileInput.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    importFromCSV(this.files[0]);
+                    this.value = ''; // Reset file input
+                }
+            });
+            
+            clearBtn.addEventListener('click', clearPortfolio);
+            
+            // Chart toggle buttons
+            chartBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    chartBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    activeChart = this.getAttribute('data-chart');
+                    
+                    if (activeChart === 'allocation') {
+                        activeChartTitle.textContent = 'Portfolio Allocation';
+                    } else if (activeChart === 'performance') {
+                        activeChartTitle.textContent = 'Portfolio Value Trend';
+                    } else if (activeChart === 'gainLoss') {
+                        activeChartTitle.textContent = 'Gain/Loss Trend';
+                    }
+                    
+                    updateCharts();
+                });
+            });
+            
+            // TradingView symbol selector
+            symbolSelect.addEventListener('change', function() {
+                initTradingView(this.value);
+            });
             
             // If no saved portfolio, initialize with sample
             if (portfolio.length === 0) {
