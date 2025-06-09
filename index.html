@@ -1,13 +1,14 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Crypto Portfolio Manager</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://s3.tradingview.com/tv.js"></script>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Advanced Crypto Portfolio Manager</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://s3.tradingview.com/tv.js"></script>
+<style>
         * {
             margin: 0;
             padding: 0;
@@ -916,265 +917,247 @@
         }
     </style>
 
-  <!-- Firebase App (compat) -->
-  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-database-compat.js"></script>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-database-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDqUVoMtCQmu6FzDX1uh7msxFXXD072-_o",
+    authDomain: "real-time-crypto-portfolio.firebaseapp.com",
+    projectId: "real-time-crypto-portfolio",
+    storageBucket: "real-time-crypto-portfolio.firebasestorage.app",
+    messagingSenderId: "487228603163",
+    appId: "1:487228603163:web:1d0139f5cddfc05504f1be",
+    measurementId: "G-DBY3G5V9QY",
+    databaseURL: "https://real-time-crypto-portfolio-default-rtdb.firebaseio.com/"
+  };
 
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyDqUVoMtCQmu6FzDX1uh7msxFXXD072-_o",
-      authDomain: "real-time-crypto-portfolio.firebaseapp.com",
-      projectId: "real-time-crypto-portfolio",
-      storageBucket: "real-time-crypto-portfolio.firebasestorage.app",
-      messagingSenderId: "487228603163",
-      appId: "1:487228603163:web:1d0139f5cddfc05504f1be",
-      measurementId: "G-DBY3G5V9QY",
-      databaseURL: "https://real-time-crypto-portfolio-default-rtdb.firebaseio.com/"
-    };
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.database();
 
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.database();
-
-    window.loginUser = async function(username, password) {
-      try {
-        const email = `${username}@cryptoapp.com`;
-        await auth.signInWithEmailAndPassword(email, password);
-        return true;
-      } catch (err) {
-        alert('Login failed: ' + err.message);
-        return false;
-      }
+  async function loginUser(username, password) {
+    try {
+      const email = `${username}@cryptoapp.com`;
+      await auth.signInWithEmailAndPassword(email, password);
+      return true;
+    } catch (err) {
+      alert('Login failed: ' + err.message);
+      return false;
     }
+  }
 
-    window.registerUser = async function(username, password) {
-      try {
-        const email = `${username}@cryptoapp.com`;
-        await auth.createUserWithEmailAndPassword(email, password);
-        return true;
-      } catch (err) {
-        alert('Registration failed: ' + err.message);
-        return false;
-      }
+  async function registerUser(username, password) {
+    try {
+      const email = `${username}@cryptoapp.com`;
+      await auth.createUserWithEmailAndPassword(email, password);
+      return true;
+    } catch (err) {
+      alert('Registration failed: ' + err.message);
+      return false;
     }
+  }
 
-    window.logoutUser = async function() {
-      await auth.signOut();
-    }
+  async function logoutUser() {
+    await auth.signOut();
+  }
 
-    window.savePortfolio = async function() {
-      if (!window.currentUser || !window.portfolio) return;
-      const userRef = db.ref(`users/${window.currentUser.uid}/portfolio`);
-      const portfolioObj = {};
-      for (let coin of window.portfolio) {
-        portfolioObj[coin.id] = coin;
-      }
-      await userRef.set(portfolioObj);
-    }
+  async function savePortfolio() {
+    if (!window.currentUser || !window.portfolio) return;
+    const userRef = db.ref(`users/${window.currentUser.uid}/portfolio`);
+    await userRef.set(window.portfolio);
+  }
 
-    window.loadPortfolio = async function() {
-      if (!window.currentUser) return;
-      const userRef = db.ref(`users/${window.currentUser.uid}/portfolio`);
-      userRef.on('value', (snapshot) => {
-        const data = snapshot.val();
-        if (data) {
-          window.portfolio = Object.values(data);
-        } else {
-          window.portfolio = [];
-        }
+  async function loadPortfolio() {
+    if (!window.currentUser) return;
+    const userRef = db.ref(`users/${window.currentUser.uid}/portfolio`);
+    userRef.on('value', (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        window.portfolio = data;
         window.portfolio.forEach(coin => {
           coin.loading = true;
-          window.fetchBinancePrice(coin.symbol, coin.id);
+          fetchBinancePrice(coin.symbol, coin.id);
         });
-        window.renderPortfolio();
-      });
-    }
-
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        window.currentUser = user;
-        window.setLoggedInUser(user.email.split('@')[0]);
+        renderPortfolio();
       } else {
-        window.currentUser = null;
-        document.getElementById('mainContent').style.display = 'none';
-        document.getElementById('loginModal').style.display = 'flex';
+        window.portfolio = [];
+        renderPortfolio();
       }
     });
-  </script>
+  }
 
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      window.currentUser = user;
+      setLoggedInUser(user.email.split('@')[0]);
+    } else {
+      window.currentUser = null;
+      document.getElementById("mainContent").style.display = "none";
+      document.getElementById("loginModal").style.display = "flex";
+    }
+  });
+</script>
 </head>
 <body>
-    <!-- Login Modal -->
-    <div class="login-modal" id="loginModal">
-        <div class="login-container">
-            <h2 class="login-title">Crypto Portfolio Manager</h2>
-            <form class="login-form" id="loginForm">
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" placeholder="Enter username" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="Enter password" required>
-                </div>
-                <div class="login-actions">
-                    <button type="submit" class="btn">
-                        <i class="fas fa-sign-in-alt"></i> Login
+<!-- Login Modal -->
+<div class="login-modal" id="loginModal">
+<div class="login-container">
+<h2 class="login-title">Crypto Portfolio Manager</h2>
+<form class="login-form" id="loginForm">
+<div class="form-group">
+<label for="username">Username</label>
+<input id="username" placeholder="Enter username" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="password">Password</label>
+<input id="password" placeholder="Enter password" required="" type="password"/>
+</div>
+<div class="login-actions">
+<button class="btn" type="submit">
+<i class="fas fa-sign-in-alt"></i> Login
                     </button>
-                    <button type="button" class="btn register" id="registerBtn">
-                        <i class="fas fa-user-plus"></i> Register
+<button class="btn register" id="registerBtn" type="button">
+<i class="fas fa-user-plus"></i> Register
                     </button>
-                </div>
-            </form>
-            <div class="login-footer">
-                <p>Demo account: user:demo | pass:demo123</p>
-            </div>
-        </div>
-    </div>
-    
-    <div class="container" id="mainContent" style="display: none;">
-        <header>
-            <div class="header-content">
-                <h1>Advanced Crypto Portfolio Manager</h1>
-                <p class="subtitle">Track your cryptocurrency investments with live prices, charts, and trading strategies</p>
-            </div>
-            <div class="user-controls">
-                <div class="user-info">
-                    <div class="user-icon" id="userIcon">U</div>
-                    <div class="user-name" id="userName">User</div>
-                    <button class="logout-btn" id="logoutBtn" title="Logout">
-                        <i class="fas fa-sign-out-alt"></i>
-                    </button>
-                </div>
-            </div>
-        </header>
-        
-        <div class="nav-container">
-            <form class="nav-form" id="coinForm">
-                <div class="form-group symbol-search-container">
-                    <label for="coinSymbol">Coin Symbol</label>
-                    <input type="text" id="coinSymbol" class="symbol-search-input" placeholder="Search or type symbol" required>
-                    <div class="symbol-dropdown" id="symbolDropdown"></div>
-                </div>
-                <div class="form-group">
-                    <label for="buyPrice">Buy Price (USDT)</label>
-                    <input type="number" step="0.00000001" id="buyPrice" placeholder="Enter buy price" required>
-                </div>
-                <div class="form-group">
-                    <label for="quantity">Amount</label>
-                    <input type="number" step="0.00000001" id="quantity" placeholder="Enter amount" required value="1">
-                </div>
-                <button type="submit" class="btn">
-                    <i class="fas fa-plus"></i> Add Coin
+</div>
+</form>
+<div class="login-footer">
+<p>Demo account: user:demo | pass:demo123</p>
+</div>
+</div>
+</div>
+<div class="container" id="mainContent" style="display: none;">
+<header>
+<div class="header-content">
+<h1>Advanced Crypto Portfolio Manager</h1>
+<p class="subtitle">Track your cryptocurrency investments with live prices, charts, and trading strategies</p>
+</div>
+<div class="user-controls">
+<div class="user-info">
+<div class="user-icon" id="userIcon">U</div>
+<div class="user-name" id="userName">User</div>
+<button class="logout-btn" id="logoutBtn" title="Logout">
+<i class="fas fa-sign-out-alt"></i>
+</button>
+</div>
+</div>
+</header>
+<div class="nav-container">
+<form class="nav-form" id="coinForm">
+<div class="form-group symbol-search-container">
+<label for="coinSymbol">Coin Symbol</label>
+<input class="symbol-search-input" id="coinSymbol" placeholder="Search or type symbol" required="" type="text"/>
+<div class="symbol-dropdown" id="symbolDropdown"></div>
+</div>
+<div class="form-group">
+<label for="buyPrice">Buy Price (USDT)</label>
+<input id="buyPrice" placeholder="Enter buy price" required="" step="0.00000001" type="number"/>
+</div>
+<div class="form-group">
+<label for="quantity">Amount</label>
+<input id="quantity" placeholder="Enter amount" required="" step="0.00000001" type="number" value="1"/>
+</div>
+<button class="btn" type="submit">
+<i class="fas fa-plus"></i> Add Coin
                 </button>
-            </form>
-            
-            <div class="nav-actions">
-                <div class="import-container">
-                    <button class="btn import" id="importBtn">
-                        <i class="fas fa-file-import"></i> Import
+</form>
+<div class="nav-actions">
+<div class="import-container">
+<button class="btn import" id="importBtn">
+<i class="fas fa-file-import"></i> Import
                     </button>
-                    <input type="file" id="fileInput" accept=".csv">
-                </div>
-                <button class="btn export" id="exportBtn">
-                    <i class="fas fa-file-export"></i> Export
+<input accept=".csv" id="fileInput" type="file"/>
+</div>
+<button class="btn export" id="exportBtn">
+<i class="fas fa-file-export"></i> Export
                 </button>
-                <button class="btn clear" id="clearBtn">
-                    <i class="fas fa-trash-alt"></i> Clear
+<button class="btn clear" id="clearBtn">
+<i class="fas fa-trash-alt"></i> Clear
                 </button>
-            </div>
-        </div>
-        
-        <div class="table-container">
-            <table id="portfolioTable">
-                <thead>
-                    <tr>
-                        <th>Symbol</th>
-                        <th>Buy Price (USDT)</th>
-                        <th>Amount</th>
-                        <th>Current Price (USDT)</th>
-                        <th>Value (USDT)</th>
-                        <th>Gain/Loss (USDT)</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="portfolioBody">
-                    <!-- Portfolio data will be loaded here -->
-                </tbody>
-            </table>
-            
-            <div class="portfolio-summary">
-                <div class="summary-item">
-                    <div class="summary-label">Portfolio Value</div>
-                    <div class="summary-value portfolio-value" id="portfolioValue">$0.00</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-label">Total Gain/Loss</div>
-                    <div class="summary-value" id="totalGainLoss">$0.00</div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="charts-section">
-            <div class="charts-header">
-                <h2 class="charts-title">Portfolio Analytics</h2>
-                <div class="chart-toggle">
-                    <button class="chart-btn active" data-chart="allocation">Allocation</button>
-                    <button class="chart-btn" data-chart="performance">Performance</button>
-                    <button class="chart-btn" data-chart="gainLoss">Gain/Loss</button>
-                </div>
-            </div>
-            
-            <div class="chart-container">
-                <div class="chart-box">
-                    <div class="chart-title">Portfolio Allocation</div>
-                    <div class="chart-wrapper">
-                        <canvas id="allocationChart"></canvas>
-                    </div>
-                </div>
-                <div class="chart-box">
-                    <div class="chart-title" id="activeChartTitle">Portfolio Value Trend</div>
-                    <div class="chart-wrapper">
-                        <canvas id="performanceChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="tradingview-section">
-            <div class="tradingview-header">
-                <h2 class="tradingview-title">TradingView Strategy Analysis</h2>
-                <div class="symbol-selector">
-                    <label for="symbolSelect">Select Coin:</label>
-                    <select id="symbolSelect">
-                        <!-- Options will be populated dynamically -->
-                    </select>
-                </div>
-            </div>
-            
-            <div class="tradingview-container" id="tradingview-chart"></div>
-        </div>
-        
-        <div class="status-container">
-            <div class="price-update-indicator">
-                <div class="dot"></div>
-                <span>Prices update automatically every 5 seconds</span>
-            </div>
-            
-            <div class="last-updated">
-                <i class="fas fa-sync-alt"></i>
-                <span id="lastUpdated">Last updated: Just now</span>
-            </div>
-            
-            <div class="api-status">
-                <div class="api-status-dot"></div>
-                <div class="api-status-text">Connected to Binance API</div>
-            </div>
-        </div>
-    </div>
-    
-    <script>
+</div>
+</div>
+<div class="table-container">
+<table id="portfolioTable">
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Buy Price (USDT)</th>
+<th>Amount</th>
+<th>Current Price (USDT)</th>
+<th>Value (USDT)</th>
+<th>Gain/Loss (USDT)</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody id="portfolioBody">
+<!-- Portfolio data will be loaded here -->
+</tbody>
+</table>
+<div class="portfolio-summary">
+<div class="summary-item">
+<div class="summary-label">Portfolio Value</div>
+<div class="summary-value portfolio-value" id="portfolioValue">$0.00</div>
+</div>
+<div class="summary-item">
+<div class="summary-label">Total Gain/Loss</div>
+<div class="summary-value" id="totalGainLoss">$0.00</div>
+</div>
+</div>
+</div>
+<div class="charts-section">
+<div class="charts-header">
+<h2 class="charts-title">Portfolio Analytics</h2>
+<div class="chart-toggle">
+<button class="chart-btn active" data-chart="allocation">Allocation</button>
+<button class="chart-btn" data-chart="performance">Performance</button>
+<button class="chart-btn" data-chart="gainLoss">Gain/Loss</button>
+</div>
+</div>
+<div class="chart-container">
+<div class="chart-box">
+<div class="chart-title">Portfolio Allocation</div>
+<div class="chart-wrapper">
+<canvas id="allocationChart"></canvas>
+</div>
+</div>
+<div class="chart-box">
+<div class="chart-title" id="activeChartTitle">Portfolio Value Trend</div>
+<div class="chart-wrapper">
+<canvas id="performanceChart"></canvas>
+</div>
+</div>
+</div>
+</div>
+<div class="tradingview-section">
+<div class="tradingview-header">
+<h2 class="tradingview-title">TradingView Strategy Analysis</h2>
+<div class="symbol-selector">
+<label for="symbolSelect">Select Coin:</label>
+<select id="symbolSelect">
+<!-- Options will be populated dynamically -->
+</select>
+</div>
+</div>
+<div class="tradingview-container" id="tradingview-chart"></div>
+</div>
+<div class="status-container">
+<div class="price-update-indicator">
+<div class="dot"></div>
+<span>Prices update automatically every 5 seconds</span>
+</div>
+<div class="last-updated">
+<i class="fas fa-sync-alt"></i>
+<span id="lastUpdated">Last updated: Just now</span>
+</div>
+<div class="api-status">
+<div class="api-status-dot"></div>
+<div class="api-status-text">Connected to Binance API</div>
+</div>
+</div>
+</div>
+<script>
         // Database for coins
         let portfolio = [];
         let historicalData = [];
