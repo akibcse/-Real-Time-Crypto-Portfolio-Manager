@@ -915,6 +915,94 @@
             }
         }
     </style>
+
+  <!-- Firebase App (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-database-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDqUVoMtCQmu6FzDX1uh7msxFXXD072-_o",
+      authDomain: "real-time-crypto-portfolio.firebaseapp.com",
+      projectId: "real-time-crypto-portfolio",
+      storageBucket: "real-time-crypto-portfolio.firebasestorage.app",
+      messagingSenderId: "487228603163",
+      appId: "1:487228603163:web:1d0139f5cddfc05504f1be",
+      measurementId: "G-DBY3G5V9QY",
+      databaseURL: "https://real-time-crypto-portfolio-default-rtdb.firebaseio.com/"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.database();
+
+    window.loginUser = async function(username, password) {
+      try {
+        const email = `${username}@cryptoapp.com`;
+        await auth.signInWithEmailAndPassword(email, password);
+        return true;
+      } catch (err) {
+        alert('Login failed: ' + err.message);
+        return false;
+      }
+    }
+
+    window.registerUser = async function(username, password) {
+      try {
+        const email = `${username}@cryptoapp.com`;
+        await auth.createUserWithEmailAndPassword(email, password);
+        return true;
+      } catch (err) {
+        alert('Registration failed: ' + err.message);
+        return false;
+      }
+    }
+
+    window.logoutUser = async function() {
+      await auth.signOut();
+    }
+
+    window.savePortfolio = async function() {
+      if (!window.currentUser || !window.portfolio) return;
+      const userRef = db.ref(`users/${window.currentUser.uid}/portfolio`);
+      const portfolioObj = {};
+      for (let coin of window.portfolio) {
+        portfolioObj[coin.id] = coin;
+      }
+      await userRef.set(portfolioObj);
+    }
+
+    window.loadPortfolio = async function() {
+      if (!window.currentUser) return;
+      const userRef = db.ref(`users/${window.currentUser.uid}/portfolio`);
+      userRef.on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          window.portfolio = Object.values(data);
+        } else {
+          window.portfolio = [];
+        }
+        window.portfolio.forEach(coin => {
+          coin.loading = true;
+          window.fetchBinancePrice(coin.symbol, coin.id);
+        });
+        window.renderPortfolio();
+      });
+    }
+
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        window.currentUser = user;
+        window.setLoggedInUser(user.email.split('@')[0]);
+      } else {
+        window.currentUser = null;
+        document.getElementById('mainContent').style.display = 'none';
+        document.getElementById('loginModal').style.display = 'flex';
+      }
+    });
+  </script>
+
 </head>
 <body>
     <!-- Login Modal -->
