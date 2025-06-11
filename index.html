@@ -290,7 +290,7 @@
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
             position: relative;
             z-index: 90;
-            overflow: auto;
+            overflow: scroll;
             margin-bottom: 25px;
         }
         
@@ -1435,7 +1435,7 @@
             updateCharts();
         }
         
-       // Render portfolio table
+        // Render portfolio table
         function renderPortfolio() {
             portfolioBody.innerHTML = '';
             
@@ -1461,7 +1461,6 @@
                 const gainLossFormatted = formatGainLoss(gainLoss);
                 
                 const row = document.createElement('tr');
-                row.setAttribute('data-id', coin.id);
                 row.classList.add('smooth-update');
                 row.innerHTML = `
                     <td>
@@ -1496,7 +1495,6 @@
                 
                 portfolioBody.appendChild(row);
             });
- 
             
             // Add event listeners for actions
             document.querySelectorAll('.action-btn.delete').forEach(btn => {
@@ -1514,14 +1512,34 @@
                 });
             });
             
-            // Add sorting functionality to table headers
-            addSortingFunctionality();
-            
             updatePortfolioSummary();
             updateTradingViewSymbols();
         }
-
-        // Edit coin - Fixed version
+        
+        // Add new coin
+        function addCoin(symbol, buyPrice, quantity) {
+            const symbolDataItem = symbolData.find(item => item.symbol === symbol.toUpperCase());
+            const name = symbolDataItem ? symbolDataItem.name : symbol;
+            
+            const newCoin = {
+                id: portfolio.length > 0 ? Math.max(...portfolio.map(c => c.id)) + 1 : 1,
+                symbol: symbol.toUpperCase(),
+                name: name,
+                buyPrice: parseFloat(buyPrice),
+                quantity: parseFloat(quantity),
+                currentPrice: parseFloat(buyPrice), // Start with same as buy price
+                loading: true
+            };
+            
+            portfolio.push(newCoin);
+            savePortfolio();
+            renderPortfolio();
+            
+            // Fetch actual price from Binance
+            fetchBinancePrice(newCoin.symbol, newCoin.id);
+        }
+        
+        // Edit coin
         function editCoin(coinId) {
             const coinIndex = portfolio.findIndex(coin => coin.id === coinId);
             if (coinIndex === -1) return;
@@ -1566,13 +1584,21 @@
                     </div>
                 </td>
             `;
-// Replace the row content with the edit form
-            row.innerHTML = editForm;
+            
+            // Create a new row for editing
+            const newRow = document.createElement('tr');
+            newRow.setAttribute('data-id', coinId);
+            newRow.classList.add('editing');
+            newRow.innerHTML = editForm;
+            
+            // Replace the existing row with the edit row
+            const existingRow = document.querySelector(`tr[data-id="${coinId}"]`);
+            existingRow.replaceWith(newRow);
             
             // Add save event listener
-            row.querySelector('.btn.save').addEventListener('click', function() {
-                const newBuyPrice = parseFloat(row.querySelector('.edit-buy-price').value);
-                const newQuantity = parseFloat(row.querySelector('.edit-quantity').value);
+            document.querySelector(`.btn.save[data-id="${coinId}"]`).addEventListener('click', function() {
+                const newBuyPrice = parseFloat(document.querySelector(`tr[data-id="${coinId}"] .edit-buy-price`).value);
+                const newQuantity = parseFloat(document.querySelector(`tr[data-id="${coinId}"] .edit-quantity`).value);
                 
                 if (!isNaN(newBuyPrice) && !isNaN(newQuantity) && newBuyPrice > 0 && newQuantity > 0) {
                     coin.buyPrice = newBuyPrice;
@@ -1585,69 +1611,11 @@
             });
             
             // Add cancel event listener
-            row.querySelector('.btn.cancel').addEventListener('click', function() {
+            document.querySelector(`.btn.cancel[data-id="${coinId}"]`).addEventListener('click', function() {
                 renderPortfolio();
             });
         }
-
-        // Add sorting functionality to table headers
-        function addSortingFunctionality() {
-            const headers = document.querySelectorAll('#portfolioTable th');
-            headers.forEach((header, index) => {
-                if (index !== headers.length - 1) { // Skip actions column
-                    header.style.cursor = 'pointer';
-                    header.addEventListener('click', () => {
-                        sortTable(index);
-                    });
-                }
-            });
-        }
-
-        // Sort table by column
-        function sortTable(columnIndex) {
-            const tbody = document.getElementById('portfolioBody');
-            const rows = Array.from(tbody.querySelectorAll('tr'));
-            
-            // Skip if empty portfolio
-            if (rows.length === 1 && rows[0].querySelector('.empty-portfolio')) {
-                return;
-            }
-            
-            // Determine sort direction
-            const currentDirection = tbody.getAttribute('data-sort-direction') || 'asc';
-            const newDirection = currentDirection === 'asc' ? 'desc' : 'asc';
-            tbody.setAttribute('data-sort-direction', newDirection);
-            
-            // Sort rows
-            rows.sort((a, b) => {
-                let aValue, bValue;
-                
-                if (columnIndex === 0) { // Symbol column
-                    aValue = a.querySelector('.coin-symbol').textContent;
-                    bValue = b.querySelector('.coin-symbol').textContent;
-                } else if (columnIndex === 6) { // Gain/Loss column
-                    aValue = parseFloat(a.querySelector('td:nth-child(6) div').textContent.replace(/[^0-9.-]/g, ''));
-                    bValue = parseFloat(b.querySelector('td:nth-child(6) div').textContent.replace(/[^0-9.-]/g, ''));
-                } else {
-                    aValue = parseFloat(a.querySelector(`td:nth-child(${columnIndex + 1})`).textContent.replace(/[^0-9.]/g, ''));
-                    bValue = parseFloat(b.querySelector(`td:nth-child(${columnIndex + 1})`).textContent.replace(/[^0-9.]/g, ''));
-                }
-                
-                if (newDirection === 'asc') {
-                    return aValue > bValue ? 1 : -1;
-                } else {
-                    return aValue < bValue ? 1 : -1;
-                }
-            });
-            
-            // Re-append sorted rows
-            rows.forEach(row => tbody.appendChild(row));
-        }
-
-
-
-
-
+        
         // Delete coin
         function deleteCoin(coinId) {
             portfolio = portfolio.filter(coin => coin.id !== coinId);
