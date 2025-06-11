@@ -1496,24 +1496,7 @@
                 
                 portfolioBody.appendChild(row);
             });
-   // Add new coin
-        function addCoin(symbol, buyPrice, quantity) {
-            const symbolDataItem = symbolData.find(item => item.symbol === symbol.toUpperCase());
-            const name = symbolDataItem ? symbolDataItem.name : symbol;
-            
-            const newCoin = {
-                id: portfolio.length > 0 ? Math.max(...portfolio.map(c => c.id)) + 1 : 1,
-                symbol: symbol.toUpperCase(),
-                name: name,
-                buyPrice: parseFloat(buyPrice),
-                quantity: parseFloat(quantity),
-                currentPrice: parseFloat(buyPrice), // Start with same as buy price
-                loading: true
-            };
-            
-            portfolio.push(newCoin);
-            savePortfolio();
-            renderPortfolio();
+ 
             
             // Add event listeners for actions
             document.querySelectorAll('.action-btn.delete').forEach(btn => {
