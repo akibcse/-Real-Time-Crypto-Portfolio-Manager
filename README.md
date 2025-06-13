@@ -1,6 +1,7 @@
 # -Real-Time-Crypto-Portfolio-Manager
 📈 Real-Time Crypto Portfolio Manager
-![image](https://github.com/user-attachments/assets/484070ea-48e2-4767-97e8-3f17b7f01807)
+![image](https://github.com/user-attachments/assets/fa65f265-f7c6-4aff-a783-ef582054c6c3)
+
 
 
 
