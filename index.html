@@ -20,8 +20,8 @@
         }
         
         body {
-            background: linear-gradient(135deg, #0f172a, #1e293b);
-            color: #e2e8f0;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #fff;
             min-height: 100vh;
             padding: 20px;
         }
@@ -34,10 +34,8 @@
         
         header {
             text-align: center;
-            padding: 20px 0 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 30px 0;
+            animation: fadeIn 0.8s ease-out;
         }
         
         .header-content {
@@ -48,13 +46,15 @@
             display: flex;
             gap: 15px;
             align-items: center;
+            justify-content: center;
+            margin-top: 20px;
         }
         
         .user-info {
             display: flex;
             align-items: center;
             gap: 10px;
-            background: rgba(30, 41, 59, 0.7);
+            background: rgba(16, 22, 58, 0.7);
             padding: 8px 15px;
             border-radius: 20px;
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -64,7 +64,7 @@
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #00dc82, #00c4cc);
+            background: linear-gradient(135deg, #00c9ff, #92fe9d);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -76,51 +76,52 @@
         .user-name {
             font-weight: 500;
             font-size: 1rem;
+            color: #fff;
         }
         
         .logout-btn {
             background: transparent;
             border: none;
-            color: #94a3b8;
+            color: #a0b3c6;
             cursor: pointer;
             font-size: 1.1rem;
             transition: color 0.3s;
         }
         
         .logout-btn:hover {
-            color: #00dc82;
+            color: #00c9ff;
         }
         
         h1 {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             margin-bottom: 10px;
-            background: linear-gradient(to right, #00dc82, #00c4cc);
+            background: linear-gradient(90deg, #00c9ff, #92fe9d);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 2px 10px rgba(0, 220, 130, 0.2);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
         
         .subtitle {
-            font-size: 1.1rem;
-            color: #94a3b8;
-            max-width: 600px;
-            margin: 0 auto;
+            color: #a0b3c6;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
         }
         
         .nav-container {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            background: rgba(30, 41, 59, 0.7);
-            border-radius: 16px;
-            padding: 15px 25px;
+            background: rgba(16, 22, 58, 0.7);
+            border-radius: 15px;
+            padding: 25px;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
-            margin-bottom: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
             gap: 20px;
             position: relative;
             z-index: 100;
+            animation: slideUp 0.6s ease-out;
         }
         
         .nav-form {
@@ -140,7 +141,7 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 500;
-            color: #94a3b8;
+            color: #a0b3c6;
             font-size: 0.95rem;
         }
         
@@ -148,9 +149,9 @@
             width: 100%;
             padding: 12px 16px;
             border-radius: 12px;
-            background: rgba(15, 23, 42, 0.6);
+            background: rgba(30, 41, 82, 0.9);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #e2e8f0;
+            color: #fff;
             font-size: 1rem;
             appearance: none;
         }
@@ -170,7 +171,7 @@
             right: 0;
             max-height: 300px;
             overflow-y: auto;
-            background: rgba(30, 41, 59, 0.95);
+            background: rgba(30, 41, 82, 0.95);
             border-radius: 0 0 12px 12px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-top: none;
@@ -188,24 +189,25 @@
             padding: 12px 16px;
             cursor: pointer;
             transition: background 0.2s;
+            color: #fff;
         }
         
         .symbol-option:hover {
-            background: rgba(15, 23, 42, 0.8);
+            background: rgba(40, 58, 120, 0.8);
         }
         
         .symbol-option .symbol {
             font-weight: 600;
-            color: #e2e8f0;
+            color: #fff;
         }
         
         .symbol-option .name {
             font-size: 0.9rem;
-            color: #94a3b8;
+            color: #a0b3c6;
         }
         
         .btn {
-            background: linear-gradient(to right, #00dc82, #00c4cc);
+            background: linear-gradient(to right, #00c9ff, #92fe9d);
             color: #0f172a;
             border: none;
             padding: 12px 20px;
@@ -224,15 +226,15 @@
         
         .btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 7px 20px rgba(0, 220, 130, 0.4);
+            box-shadow: 0 7px 20px rgba(0, 201, 255, 0.4);
         }
         
         .btn.export {
-            background: linear-gradient(to right, #6366f1, #8b5cf6);
+            background: linear-gradient(to right, #8b5cf6, #c084fc);
         }
         
         .btn.export:hover {
-            box-shadow: 0 7px 20px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 7px 20px rgba(139, 92, 246, 0.4);
         }
         
         .btn.import {
@@ -268,7 +270,7 @@
         }
         
         .btn.cancel {
-            background: linear-gradient(to right, #94a3b8, #cbd5e1);
+            background: linear-gradient(to right, #a0b3c6, #cbd5e1);
         }
         
         .btn.cancel:hover {
@@ -282,21 +284,62 @@
             margin-top: auto;
         }
         
-        .table-container {
-            border-radius: 16px;
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(10px);
+        .portfolio-summary {
+            background: rgba(16, 22, 58, 0.7);
+            border-radius: 15px;
+            padding: 25px;
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
-            position: relative;
-            z-index: 90;
-            overflow: auto;
-            margin-bottom: 25px;
+            backdrop-filter: blur(10px);
+            animation: slideUp 0.6s ease-out;
+        }
+        
+        .summary-item {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .summary-label {
+            font-size: 1.1rem;
+            color: #8a9fb5;
+            margin-bottom: 10px;
+        }
+        
+        .summary-value {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #4deeea;
+        }
+        
+        .portfolio-value {
+            color: #4deeea;
+        }
+        
+        .total-gain.positive {
+            color: #00ff9d;
+        }
+        
+        .total-gain.negative {
+            color: #ff4d6d;
+        }
+        
+        .table-container {
+            background: rgba(16, 22, 58, 0.7);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            margin-bottom: 30px;
+            animation: fadeIn 0.8s ease-out;
         }
         
         .table-wrapper {
             overflow-x: auto;
-            border-radius: 16px 16px 0 0;
+            border-radius: 15px 15px 0 0;
         }
         
         table {
@@ -305,32 +348,51 @@
             min-width: 700px;
         }
         
-        th, td {
-            padding: 16px 20px;
-            text-align: left;
-        }
-        
-        thead {
-            background: rgba(15, 23, 42, 0.8);
-        }
-        
         th {
+            background: rgba(30, 41, 82, 0.9);
+            padding: 18px 15px;
+            text-align: left;
             font-weight: 600;
-            color: #94a3b8;
-            font-size: 1rem;
+            color: #8a9fb5;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
         
-        tbody tr {
-            border-bottom: 1px solid rgba(148, 163, 184, 0.15);
-            transition: background 0.2s;
+        th:hover {
+            background: rgba(40, 58, 120, 0.9);
         }
         
-        tbody tr:last-child {
+        th.sort-asc::after {
+            content: "▲";
+            font-size: 0.8rem;
+            margin-left: 8px;
+            position: absolute;
+            color: #4deeea;
+        }
+        
+        th.sort-desc::after {
+            content: "▼";
+            font-size: 0.8rem;
+            margin-left: 8px;
+            position: absolute;
+            color: #4deeea;
+        }
+        
+        td {
+            padding: 18px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: #e0e9f4;
+        }
+        
+        tr:last-child td {
             border-bottom: none;
         }
         
-        tbody tr:hover {
-            background: rgba(30, 41, 59, 0.9);
+        tr:hover {
+            background: rgba(40, 58, 120, 0.3);
         }
         
         .coin-info {
@@ -343,7 +405,7 @@
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #00dc82, #00c4cc);
+            background: #2c3e50;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -355,19 +417,20 @@
         .coin-name {
             font-weight: 500;
             font-size: 1rem;
+            color: #fff;
         }
         
         .coin-symbol {
             font-size: 0.9rem;
-            color: #94a3b8;
+            color: #a0b3c6;
         }
         
         .positive {
-            color: #00dc82;
+            color: #00ff9d;
         }
         
         .negative {
-            color: #ef4444;
+            color: #ff4d6d;
         }
         
         .actions {
@@ -376,114 +439,22 @@
         }
         
         .action-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #a0b3c6;
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            background: rgba(15, 23, 42, 0.6);
+            cursor: pointer;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .action-btn:hover {
-            transform: scale(1.1);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-        
-        .action-btn.delete:hover {
-            background: rgba(239, 68, 68, 0.2);
-            color: #ef4444;
-        }
-        
-        .action-btn.edit:hover {
-            background: rgba(245, 158, 11, 0.2);
-            color: #f59e0b;
-        }
-        
-        .status-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-            color: #94a3b8;
-            font-size: 0.9rem;
-            margin-bottom: 25px;
-        }
-        
-        .price-update-indicator {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .price-update-indicator .dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: #00dc82;
-            animation: pulse 1.5s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { opacity: 0.2; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1.2); }
-            100% { opacity: 0.2; transform: scale(0.8); }
-        }
-        
-        .last-updated {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .last-updated i {
-            color: #00dc82;
-        }
-        
-        .value-cell {
-            font-weight: 500;
-            font-size: 1rem;
-            font-family: 'Courier New', monospace;
-        }
-        
-        .portfolio-summary {
-            display: flex;
-            justify-content: space-between;
-            background: rgba(15, 23, 42, 0.8);
-            border-radius: 12px;
-            padding: 18px;
-            margin: 20px;
-        }
-        
-        .summary-item {
-            text-align: center;
-            flex: 1;
-        }
-        
-        .summary-label {
-            font-size: 0.9rem;
-            color: #94a3b8;
-            margin-bottom: 5px;
-        }
-        
-        .summary-value {
-            font-size: 1.3rem;
-            font-weight: 700;
-        }
-        
-        .portfolio-value {
-            color: #00c4cc;
-        }
-        
-        .total-gain {
-            color: #00dc82;
-        }
-        
-        .total-loss {
-            color: #ef4444;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
         }
         
         .fade-in {
@@ -505,7 +476,7 @@
             height: 18px;
             border: 3px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
-            border-top-color: #00dc82;
+            border-top-color: #00ff9d;
             animation: spin 1s ease-in-out infinite;
         }
         
@@ -523,18 +494,18 @@
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            background-color: #00dc82;
+            background-color: #00ff9d;
         }
         
         .api-status-text {
             font-size: 0.9rem;
-            color: #94a3b8;
+            color: #8a9fb5;
         }
         
         .empty-portfolio {
             text-align: center;
             padding: 40px;
-            color: #94a3b8;
+            color: #8a9fb5;
         }
         
         .empty-portfolio i {
@@ -545,18 +516,19 @@
         
         .empty-portfolio h3 {
             margin-bottom: 10px;
-            color: #e2e8f0;
+            color: #e0e9f4;
         }
         
         /* New chart section styles */
         .charts-section {
-            background: rgba(30, 41, 59, 0.7);
-            border-radius: 16px;
+            background: rgba(16, 22, 58, 0.7);
+            border-radius: 15px;
             padding: 20px;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.6s ease-out;
         }
         
         .charts-header {
@@ -570,7 +542,7 @@
         
         .charts-title {
             font-size: 1.4rem;
-            background: linear-gradient(to right, #00dc82, #00c4cc);
+            background: linear-gradient(to right, #00c9ff, #92fe9d);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -581,9 +553,9 @@
         }
         
         .chart-btn {
-            background: rgba(15, 23, 42, 0.6);
+            background: rgba(30, 41, 82, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #94a3b8;
+            color: #8a9fb5;
             padding: 8px 15px;
             border-radius: 8px;
             cursor: pointer;
@@ -591,7 +563,7 @@
         }
         
         .chart-btn.active {
-            background: linear-gradient(to right, #00dc82, #00c4cc);
+            background: linear-gradient(to right, #00c9ff, #92fe9d);
             color: #0f172a;
             font-weight: 600;
         }
@@ -604,7 +576,7 @@
         }
         
         .chart-box {
-            background: rgba(15, 23, 42, 0.6);
+            background: rgba(30, 41, 82, 0.6);
             border-radius: 12px;
             padding: 15px;
             height: 300px;
@@ -614,7 +586,7 @@
             text-align: center;
             margin-bottom: 10px;
             font-size: 1.1rem;
-            color: #94a3b8;
+            color: #8a9fb5;
         }
         
         .chart-wrapper {
@@ -629,13 +601,14 @@
         
         /* TradingView section */
         .tradingview-section {
-            background: rgba(30, 41, 59, 0.7);
-            border-radius: 16px;
+            background: rgba(16, 22, 58, 0.7);
+            border-radius: 15px;
             padding: 20px;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
-                height: 900px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            height: 900px;
+            animation: slideUp 0.6s ease-out;
         }
         
         .tradingview-header {
@@ -649,7 +622,7 @@
         
         .tradingview-title {
             font-size: 1.4rem;
-            background: linear-gradient(to right, #00dc82, #00c4cc);
+            background: linear-gradient(to right, #00c9ff, #92fe9d);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -662,14 +635,14 @@
         
         .symbol-selector label {
             margin-bottom: 0;
-            color: #94a3b8;
+            color: #8a9fb5;
         }
         
         .symbol-selector select {
             min-width: 120px;
-            background: rgba(15, 23, 42, 0.6);
+            background: rgba(30, 41, 82, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #e2e8f0;
+            color: #fff;
         }
         
         .tradingview-container {
@@ -708,7 +681,7 @@
         }
         
         .login-container {
-            background: rgba(30, 41, 59, 0.9);
+            background: rgba(16, 22, 58, 0.9);
             border-radius: 16px;
             padding: 40px;
             width: 100%;
@@ -722,7 +695,7 @@
         .login-title {
             font-size: 2rem;
             margin-bottom: 30px;
-            background: linear-gradient(to right, #00dc82, #00c4cc);
+            background: linear-gradient(to right, #00c9ff, #92fe9d);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -762,18 +735,18 @@
         
         .login-footer {
             margin-top: 25px;
-            color: #94a3b8;
+            color: #8a9fb5;
             font-size: 0.9rem;
         }
         
         .login-footer a {
-            color: #00c4cc;
+            color: #00c9ff;
             text-decoration: none;
             transition: color 0.3s;
         }
         
         .login-footer a:hover {
-            color: #00dc82;
+            color: #92fe9d;
             text-decoration: underline;
         }
         
@@ -784,7 +757,7 @@
             right: 20px;
             padding: 10px 15px;
             border-radius: 8px;
-            background: rgba(30, 41, 59, 0.9);
+            background: rgba(16, 22, 58, 0.9);
             border: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
@@ -801,11 +774,23 @@
         }
         
         .firebase-status-connected {
-            background-color: #00dc82;
+            background-color: #00ff9d;
         }
         
         .firebase-status-disconnected {
-            background-color: #ef4444;
+            background-color: #ff4d6d;
+        }
+        
+        /* Animations */
+        @keyframes slideUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0);
+            }
         }
         
         /* Enhanced mobile responsiveness */
@@ -845,12 +830,6 @@
             
             table {
                 min-width: 100%;
-            }
-            
-            .status-container {
-                flex-direction: column;
-                gap: 15px;
-                align-items: flex-start;
             }
             
             .portfolio-summary {
@@ -990,7 +969,7 @@
     <div class="container" id="mainContent" style="display: none;">
         <header>
             <div class="header-content">
-                <h1>Advanced Crypto Portfolio Manager</h1>
+                <h1><i class="fas fa-chart-line"></i> Advanced Crypto Portfolio Manager</h1>
                 <p class="subtitle">Track your cryptocurrency investments with live prices, charts, and trading strategies</p>
             </div>
             <div class="user-controls">
@@ -1040,33 +1019,39 @@
             </div>
         </div>
         
+        <div class="portfolio-summary">
+            <div class="summary-item">
+                <div class="summary-label">Portfolio Value</div>
+                <div class="summary-value portfolio-value" id="portfolioValue">$0.00</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">Total Gain/Loss</div>
+                <div class="summary-value total-gain" id="totalGainLoss">$0.00</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">24h Change</div>
+                <div class="summary-value" id="dailyChange">0.00%</div>
+            </div>
+        </div>
+        
         <div class="table-container">
-            <table id="portfolioTable">
-                <thead>
-                    <tr>
-                        <th>Symbol</th>
-                        <th>Buy Price (USDT)</th>
-                        <th>Amount</th>
-                        <th>Current Price (USDT)</th>
-                        <th>Value (USDT)</th>
-                        <th>Gain/Loss (USDT)</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="portfolioBody">
-                    <!-- Portfolio data will be loaded here -->
-                </tbody>
-            </table>
-            
-            <div class="portfolio-summary">
-                <div class="summary-item">
-                    <div class="summary-label">Portfolio Value</div>
-                    <div class="summary-value portfolio-value" id="portfolioValue">$0.00</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-label">Total Gain/Loss</div>
-                    <div class="summary-value" id="totalGainLoss">$0.00</div>
-                </div>
+            <div class="table-wrapper">
+                <table id="portfolioTable">
+                    <thead>
+                        <tr>
+                            <th data-sort="symbol">Coin</th>
+                            <th data-sort="buyPrice">Buy Price (USDT)</th>
+                            <th data-sort="quantity">Amount</th>
+                            <th data-sort="currentPrice">Current Price (USDT)</th>
+                            <th data-sort="value">Value (USDT)</th>
+                            <th data-sort="gainLoss">Gain/Loss (USDT)</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="portfolioBody">
+                        <!-- Portfolio data will be loaded here -->
+                    </tbody>
+                </table>
             </div>
         </div>
         
@@ -1130,16 +1115,16 @@
     
     <script>
         // Firebase configuration
-       const firebaseConfig = {
-  apiKey: "AIzaSyDqUVoMtCQmu6FzDX1uh7msxFXXD072-_o",
-  authDomain: "real-time-crypto-portfolio.firebaseapp.com",
-  databaseURL: "https://real-time-crypto-portfolio-default-rtdb.firebaseio.com",
-  projectId: "real-time-crypto-portfolio",
-  storageBucket: "real-time-crypto-portfolio.firebasestorage.app",
-  messagingSenderId: "487228603163",
-  appId: "1:487228603163:web:1d0139f5cddfc05504f1be",
-  measurementId: "G-DBY3G5V9QY"
-};
+        const firebaseConfig = {
+            apiKey: "AIzaSyDqUVoMtCQmu6FzDX1uh7msxFXXD072-_o",
+            authDomain: "real-time-crypto-portfolio.firebaseapp.com",
+            databaseURL: "https://real-time-crypto-portfolio-default-rtdb.firebaseio.com",
+            projectId: "real-time-crypto-portfolio",
+            storageBucket: "real-time-crypto-portfolio.firebasestorage.app",
+            messagingSenderId: "487228603163",
+            appId: "1:487228603163:web:1d0139f5cddfc05504f1be",
+            measurementId: "G-DBY3G5V9QY"
+        };
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
@@ -1170,68 +1155,72 @@
         let portfolio = [];
         let historicalData = [];
         let currentUser = null;
+        let currentSort = {
+            key: 'symbol',
+            direction: 'asc'
+        };
         
         // Available symbols with names
         const symbolData = [
-            { symbol: "BTC", name: "Bitcoin" },
-            { symbol: "ETH", name: "Ethereum" },
-            { symbol: "SOL", name: "Solana" },
-            { symbol: "BNB", name: "Binance Coin" },
-            { symbol: "XRP", name: "Ripple" },
-            { symbol: "ADA", name: "Cardano" },
-            { symbol: "DOGE", name: "Dogecoin" },
-            { symbol: "DOT", name: "Polkadot" },
-            { symbol: "LTC", name: "Litecoin" },
-            { symbol: "MATIC", name: "Polygon" },
-            { symbol: "AVAX", name: "Avalanche" },
-            { symbol: "LINK", name: "Chainlink" },
-            { symbol: "UNI", name: "Uniswap" },
-            { symbol: "PEPE", name: "Pepe" },
-            { symbol: "SYRUP", name: "Syrup" },
-            { symbol: "KAITO", name: "Kaito" },
-            { symbol: "USDT", name: "Tether" },
-            { symbol: "USDC", name: "USD Coin" },
-            { symbol: "BCH", name: "Bitcoin Cash" },
-            { symbol: "XLM", name: "Stellar" },
-            { symbol: "WBTC", name: "Wrapped Bitcoin" },
-            { symbol: "ETC", name: "Ethereum Classic" },
-            { symbol: "AAVE", name: "Aave" },
-            { symbol: "EOS", name: "EOS" },
-            { symbol: "XMR", name: "Monero" },
-            { symbol: "TRX", name: "TRON" },
-            { symbol: "XTZ", name: "Tezos" },
-            { symbol: "SUSHI", name: "SushiSwap" },
-            { symbol: "MKR", name: "Maker" },
-            { symbol: "COMP", name: "Compound" },
-            { symbol: "YFI", name: "Yearn.finance" },
-            { symbol: "ATOM", name: "Cosmos" },
-            { symbol: "VET", name: "VeChain" },
-            { symbol: "THETA", name: "Theta Network" },
-            { symbol: "FIL", name: "Filecoin" },
-            { symbol: "NEO", name: "NEO" },
-            { symbol: "ALGO", name: "Algorand" },
-            { symbol: "KSM", name: "Kusama" },
-            { symbol: "DASH", name: "Dash" },
-            { symbol: "ZEC", name: "Zcash" },
-            { symbol: "ENJ", name: "Enjin Coin" },
-            { symbol: "BAT", name: "Basic Attention Token" },
-            { symbol: "MANA", name: "Decentraland" },
-            { symbol: "ZIL", name: "Zilliqa" },
-            { symbol: "QTUM", name: "Qtum" },
-            { symbol: "ICX", name: "ICON" },
-            { symbol: "OMG", name: "OMG Network" },
-            { symbol: "SNX", name: "Synthetix" },
-            { symbol: "GRT", name: "The Graph" },
-            { symbol: "CRV", name: "Curve DAO Token" },
-            { symbol: "BAND", name: "Band Protocol" },
-            { symbol: "REN", name: "Ren" },
-            { symbol: "UMA", name: "UMA" },
-            { symbol: "BAL", name: "Balancer" },
-            { symbol: "REP", name: "Augur" },
-            { symbol: "NMR", name: "Numeraire" },
-            { symbol: "OXT", name: "Orchid" },
-            { symbol: "KNC", name: "Kyber Network" },
-            { symbol: "ANT", name: "Aragon" }
+            { symbol: "BTC", name: "Bitcoin", icon: "fab fa-bitcoin" },
+            { symbol: "ETH", name: "Ethereum", icon: "fab fa-ethereum" },
+            { symbol: "SOL", name: "Solana", icon: "fas fa-fire" },
+            { symbol: "BNB", name: "Binance Coin", icon: "fas fa-coins" },
+            { symbol: "XRP", name: "Ripple", icon: "fas fa-bolt" },
+            { symbol: "ADA", name: "Cardano", icon: "fas fa-shapes" },
+            { symbol: "DOGE", name: "Dogecoin", icon: "fas fa-dog" },
+            { symbol: "DOT", name: "Polkadot", icon: "fas fa-circle" },
+            { symbol: "LTC", name: "Litecoin", icon: "fab fa-bitcoin" },
+            { symbol: "MATIC", name: "Polygon", icon: "fas fa-shapes" },
+            { symbol: "AVAX", name: "Avalanche", icon: "fas fa-snowflake" },
+            { symbol: "LINK", name: "Chainlink", icon: "fas fa-link" },
+            { symbol: "UNI", name: "Uniswap", icon: "fas fa-exchange-alt" },
+            { symbol: "PEPE", name: "Pepe", icon: "fas fa-frog" },
+            { symbol: "SYRUP", name: "Syrup", icon: "fas fa-utensil-spoon" },
+            { symbol: "KAITO", name: "Kaito", icon: "fas fa-robot" },
+            { symbol: "USDT", name: "Tether", icon: "fas fa-dollar-sign" },
+            { symbol: "USDC", name: "USD Coin", icon: "fas fa-dollar-sign" },
+            { symbol: "BCH", name: "Bitcoin Cash", icon: "fab fa-bitcoin" },
+            { symbol: "XLM", name: "Stellar", icon: "fas fa-star" },
+            { symbol: "WBTC", name: "Wrapped Bitcoin", icon: "fab fa-bitcoin" },
+            { symbol: "ETC", name: "Ethereum Classic", icon: "fab fa-ethereum" },
+            { symbol: "AAVE", name: "Aave", icon: "fas fa-money-bill-wave" },
+            { symbol: "EOS", name: "EOS", icon: "fas fa-cube" },
+            { symbol: "XMR", name: "Monero", icon: "fas fa-user-secret" },
+            { symbol: "TRX", name: "TRON", icon: "fas fa-bolt" },
+            { symbol: "XTZ", name: "Tezos", icon: "fas fa-egg" },
+            { symbol: "SUSHI", name: "SushiSwap", icon: "fas fa-utensils" },
+            { symbol: "MKR", name: "Maker", icon: "fas fa-tools" },
+            { symbol: "COMP", name: "Compound", icon: "fas fa-piggy-bank" },
+            { symbol: "YFI", name: "Yearn.finance", icon: "fas fa-calendar" },
+            { symbol: "ATOM", name: "Cosmos", icon: "fas fa-atom" },
+            { symbol: "VET", name: "VeChain", icon: "fas fa-car" },
+            { symbol: "THETA", name: "Theta Network", icon: "fas fa-video" },
+            { symbol: "FIL", name: "Filecoin", icon: "fas fa-hdd" },
+            { symbol: "NEO", name: "NEO", icon: "fas fa-bolt" },
+            { symbol: "ALGO", name: "Algorand", icon: "fas fa-project-diagram" },
+            { symbol: "KSM", name: "Kusama", icon: "fas fa-dove" },
+            { symbol: "DASH", name: "Dash", icon: "fas fa-bolt" },
+            { symbol: "ZEC", name: "Zcash", icon: "fas fa-shield-alt" },
+            { symbol: "ENJ", name: "Enjin Coin", icon: "fas fa-gamepad" },
+            { symbol: "BAT", name: "Basic Attention Token", icon: "fas fa-eye" },
+            { symbol: "MANA", name: "Decentraland", icon: "fas fa-landmark" },
+            { symbol: "ZIL", name: "Zilliqa", icon: "fas fa-bolt" },
+            { symbol: "QTUM", name: "Qtum", icon: "fas fa-cube" },
+            { symbol: "ICX", name: "ICON", icon: "fas fa-image" },
+            { symbol: "OMG", name: "OMG Network", icon: "fas fa-bolt" },
+            { symbol: "SNX", name: "Synthetix", icon: "fas fa-sync" },
+            { symbol: "GRT", name: "The Graph", icon: "fas fa-project-diagram" },
+            { symbol: "CRV", name: "Curve DAO Token", icon: "fas fa-chart-line" },
+            { symbol: "BAND", name: "Band Protocol", icon: "fas fa-music" },
+            { symbol: "REN", name: "Ren", icon: "fas fa-exchange-alt" },
+            { symbol: "UMA", name: "UMA", icon: "fas fa-shield-alt" },
+            { symbol: "BAL", name: "Balancer", icon: "fas fa-balance-scale" },
+            { symbol: "REP", name: "Augur", icon: "fas fa-eye" },
+            { symbol: "NMR", name: "Numeraire", icon: "fas fa-calculator" },
+            { symbol: "OXT", name: "Orchid", icon: "fas fa-flower" },
+            { symbol: "KNC", name: "Kyber Network", icon: "fas fa-network-wired" },
+            { symbol: "ANT", name: "Aragon", icon: "fas fa-crown" }
         ];
         
         // DOM elements
@@ -1255,6 +1244,7 @@
         const lastUpdatedEl = document.getElementById('lastUpdated');
         const portfolioValueEl = document.getElementById('portfolioValue');
         const totalGainLossEl = document.getElementById('totalGainLoss');
+        const dailyChangeEl = document.getElementById('dailyChange');
         const symbolSelect = document.getElementById('symbolSelect');
         const chartBtns = document.querySelectorAll('.chart-btn');
         const activeChartTitle = document.getElementById('activeChartTitle');
@@ -1394,6 +1384,7 @@
         function calculatePortfolioSummary() {
             let totalValue = 0;
             let totalGainLoss = 0;
+            let prevTotalValue = historicalData.length > 0 ? historicalData[historicalData.length - 1].value : 0;
             
             portfolio.forEach(coin => {
                 const value = coin.currentPrice * coin.quantity;
@@ -1404,9 +1395,13 @@
                 totalGainLoss += gainLoss;
             });
             
+            // Calculate daily change
+            const dailyChange = prevTotalValue > 0 ? ((totalValue - prevTotalValue) / prevTotalValue) * 100 : 0;
+            
             return {
                 totalValue,
-                totalGainLoss
+                totalGainLoss,
+                dailyChange
             };
         }
         
@@ -1418,6 +1413,10 @@
             const gainLossFormatted = formatGainLoss(summary.totalGainLoss);
             totalGainLossEl.textContent = `$${gainLossFormatted.text}`;
             totalGainLossEl.className = `summary-value ${gainLossFormatted.className}`;
+            
+            // Update daily change
+            dailyChangeEl.textContent = `${summary.dailyChange >= 0 ? '+' : ''}${summary.dailyChange.toFixed(2)}%`;
+            dailyChangeEl.className = `summary-value ${summary.dailyChange >= 0 ? 'positive' : 'negative'}`;
             
             // Record historical data for charting
             const now = new Date();
@@ -1435,7 +1434,60 @@
             updateCharts();
         }
         
-        // Render portfolio table
+        // Sort portfolio
+        function sortPortfolio(key) {
+            // If clicking on the same header, toggle direction
+            if (currentSort.key === key) {
+                currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentSort.key = key;
+                currentSort.direction = 'asc';
+            }
+            
+            // Remove sort classes from all headers
+            document.querySelectorAll('th[data-sort]').forEach(header => {
+                header.classList.remove('sort-asc', 'sort-desc');
+            });
+            
+            // Add sort class to current header
+            const currentHeader = document.querySelector(`th[data-sort="${key}"]`);
+            currentHeader.classList.add(`sort-${currentSort.direction}`);
+            
+            // Perform sorting
+            portfolio.sort((a, b) => {
+                let valueA, valueB;
+                
+                if (key === 'currentPrice') {
+                    valueA = a.currentPrice;
+                    valueB = b.currentPrice;
+                } else if (key === 'value') {
+                    valueA = a.currentPrice * a.quantity;
+                    valueB = b.currentPrice * b.quantity;
+                } else if (key === 'gainLoss') {
+                    valueA = (a.currentPrice - a.buyPrice) * a.quantity;
+                    valueB = (b.currentPrice - b.buyPrice) * b.quantity;
+                } else {
+                    valueA = a[key];
+                    valueB = b[key];
+                }
+                
+                // Handle string comparison for symbol
+                if (typeof valueA === 'string') {
+                    return currentSort.direction === 'asc' 
+                        ? valueA.localeCompare(valueB) 
+                        : valueB.localeCompare(valueA);
+                }
+                
+                // Numeric comparison
+                return currentSort.direction === 'asc' 
+                    ? valueA - valueB 
+                    : valueB - valueA;
+            });
+            
+            renderPortfolio();
+        }
+        
+        // Render portfolio table - FIXED VERSION
         function renderPortfolio() {
             portfolioBody.innerHTML = '';
             
@@ -1458,28 +1510,34 @@
             portfolio.forEach(coin => {
                 const value = coin.currentPrice * coin.quantity;
                 const gainLoss = value - (coin.buyPrice * coin.quantity);
+                const gainLossPercent = ((coin.currentPrice - coin.buyPrice) / coin.buyPrice * 100).toFixed(2);
                 const gainLossFormatted = formatGainLoss(gainLoss);
                 
+                const symbolInfo = symbolData.find(item => item.symbol === coin.symbol);
+                const iconClass = symbolInfo ? symbolInfo.icon : 'fas fa-coins';
+                
                 const row = document.createElement('tr');
+                row.setAttribute('data-id', coin.id); // FIX: Add data-id attribute
                 row.classList.add('smooth-update');
                 row.innerHTML = `
                     <td>
                         <div class="coin-info">
-                            <div class="coin-icon">${coin.symbol.charAt(0)}</div>
+                            <div class="coin-icon"><i class="${iconClass}"></i></div>
                             <div>
                                 <div class="coin-name">${coin.name}</div>
                                 <div class="coin-symbol">${coin.symbol}</div>
                             </div>
                         </div>
                     </td>
-                    <td class="value-cell">${formatPrice(coin.buyPrice)}</td>
+                    <td class="value-cell">$${formatPrice(coin.buyPrice)}</td>
                     <td class="value-cell">${formatPrice(coin.quantity)}</td>
                     <td class="value-cell ${coin.currentPrice > coin.buyPrice ? 'positive' : 'negative'}" id="current-price-${coin.id}">
-                        ${coin.loading ? '<span class="loading"></span>' : formatPrice(coin.currentPrice)}
+                        ${coin.loading ? '<span class="loading"></span>' : `$${formatPrice(coin.currentPrice)}`}
                     </td>
-                    <td class="value-cell">${formatPrice(value)}</td>
-                    <td>
-                        <div class="${gainLossFormatted.className} value-cell" id="gain-loss-${coin.id}">${gainLossFormatted.text}</div>
+                    <td class="value-cell">$${formatPrice(value)}</td>
+                    <td class="${gainLossFormatted.className} value-cell" id="gain-loss-${coin.id}">
+                        ${gainLossFormatted.text}
+                        <div style="font-size: 0.85rem; opacity: 0.8;">(${gainLossPercent}%)</div>
                     </td>
                     <td>
                         <div class="actions">
@@ -1539,7 +1597,7 @@
             fetchBinancePrice(newCoin.symbol, newCoin.id);
         }
         
-        // Edit coin
+        // Edit coin - FIXED VERSION
         function editCoin(coinId) {
             const coinIndex = portfolio.findIndex(coin => coin.id === coinId);
             if (coinIndex === -1) return;
@@ -1547,11 +1605,16 @@
             const coin = portfolio[coinIndex];
             const row = document.querySelector(`tr[data-id="${coinId}"]`);
             
+            if (!row) {
+                console.error('Row not found for coin id:', coinId);
+                return;
+            }
+            
             // Create edit form
             const editForm = `
                 <td>
                     <div class="coin-info">
-                        <div class="coin-icon">${coin.symbol.charAt(0)}</div>
+                        <div class="coin-icon"><i class="${symbolData.find(item => item.symbol === coin.symbol)?.icon || 'fas fa-coins'}"></i></div>
                         <div>
                             <div class="coin-name">${coin.name}</div>
                             <div class="coin-symbol">${coin.symbol}</div>
@@ -1559,19 +1622,17 @@
                     </div>
                 </td>
                 <td>
-                    <input type="number" class="edit-buy-price" value="${coin.buyPrice}" step="0.00000001" style="width: 100%; padding: 8px; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #e2e8f0;">
+                    <input type="number" class="edit-buy-price" value="${coin.buyPrice}" step="0.00000001" style="width: 100%; padding: 8px; background: rgba(30, 41, 82, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #fff;">
                 </td>
                 <td>
-                    <input type="number" class="edit-quantity" value="${coin.quantity}" step="0.00000001" style="width: 100%; padding: 8px; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #e2e8f0;">
+                    <input type="number" class="edit-quantity" value="${coin.quantity}" step="0.00000001" style="width: 100%; padding: 8px; background: rgba(30, 41, 82, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #fff;">
                 </td>
                 <td class="value-cell ${coin.currentPrice > coin.buyPrice ? 'positive' : 'negative'}" id="current-price-${coin.id}">
-                    ${coin.loading ? '<span class="loading"></span>' : formatPrice(coin.currentPrice)}
+                    ${coin.loading ? '<span class="loading"></span>' : `$${formatPrice(coin.currentPrice)}`}
                 </td>
-                <td class="value-cell">${formatPrice(coin.currentPrice * coin.quantity)}</td>
-                <td>
-                    <div class="${coin.currentPrice > coin.buyPrice ? 'positive' : 'negative'} value-cell" id="gain-loss-${coin.id}">
-                        ${formatGainLoss(coin.currentPrice * coin.quantity - coin.buyPrice * coin.quantity).text}
-                    </div>
+                <td class="value-cell">$${formatPrice(coin.currentPrice * coin.quantity)}</td>
+                <td class="${coin.currentPrice > coin.buyPrice ? 'positive' : 'negative'} value-cell" id="gain-loss-${coin.id}">
+                    ${formatGainLoss(coin.currentPrice * coin.quantity - coin.buyPrice * coin.quantity).text}
                 </td>
                 <td>
                     <div class="actions">
@@ -1592,8 +1653,7 @@
             newRow.innerHTML = editForm;
             
             // Replace the existing row with the edit row
-            const existingRow = document.querySelector(`tr[data-id="${coinId}"]`);
-            existingRow.replaceWith(newRow);
+            row.replaceWith(newRow);
             
             // Add save event listener
             document.querySelector(`.btn.save[data-id="${coinId}"]`).addEventListener('click', function() {
@@ -1654,7 +1714,7 @@
                         gainLossCell.classList.add('fade-in');
                         
                         // Update values
-                        currentPriceCell.textContent = formatPrice(price);
+                        currentPriceCell.textContent = `$${formatPrice(price)}`;
                         currentPriceCell.className = `value-cell ${price > portfolio[coinIndex].buyPrice ? 'positive' : 'negative'}`;
                         
                         const value = price * portfolio[coinIndex].quantity;
@@ -1833,7 +1893,7 @@
                 "theme": "dark",
                 "style": "1",
                 "locale": "en",
-                "toolbar_bg": "#0f172a",
+                "toolbar_bg": "#0f2027",
                 "enable_publishing": false,
                 "hide_top_toolbar": false,
                 "hide_legend": false,
@@ -1846,16 +1906,16 @@
                     "MASimple@tv-basicstudies"
                 ],
                 "overrides": {
-                    "paneProperties.background": "#0f172a",
-                    "paneProperties.vertGridProperties.color": "rgba(148, 163, 184, 0.1)",
-                    "paneProperties.horzGridProperties.color": "rgba(148, 163, 184, 0.1)",
+                    "paneProperties.background": "#0f2027",
+                    "paneProperties.vertGridProperties.color": "rgba(138, 159, 181, 0.1)",
+                    "paneProperties.horzGridProperties.color": "rgba(138, 159, 181, 0.1)",
                     "symbolWatermarkProperties.transparency": 90,
-                    "scalesProperties.lineColor": "#94a3b8",
-                    "scalesProperties.textColor" : "#94a3b8"
+                    "scalesProperties.lineColor": "#8a9fb5",
+                    "scalesProperties.textColor" : "#8a9fb5"
                 },
                 "studies_overrides": {
                     "rsi.display": "line",
-                    "rsi.linecolor": "#00dc82"
+                    "rsi.linecolor": "#00c9ff"
                 }
             });
         }
@@ -1873,7 +1933,7 @@
                 const labels = portfolio.map(coin => coin.symbol);
                 const data = portfolio.map(coin => coin.currentPrice * coin.quantity);
                 const backgroundColors = [
-                    '#00dc82', '#00c4cc', '#6366f1', '#8b5cf6', '#3b82f6', 
+                    '#00c9ff', '#92fe9d', '#8b5cf6', '#c084fc', '#3b82f6', 
                     '#60a5fa', '#ef4444', '#f97316', '#f59e0b', '#10b981'
                 ];
                 
@@ -1894,7 +1954,7 @@
                             legend: {
                                 position: 'right',
                                 labels: {
-                                    color: '#94a3b8',
+                                    color: '#8a9fb5',
                                     font: {
                                         size: 11
                                     }
@@ -1920,7 +1980,7 @@
                         labels: ['No data'],
                         datasets: [{
                             data: [1],
-                            backgroundColor: ['rgba(148, 163, 184, 0.2)']
+                            backgroundColor: ['rgba(138, 159, 181, 0.2)']
                         }]
                     },
                     options: {
@@ -1956,13 +2016,13 @@
                         datasets: [{
                             label: activeChart === 'performance' ? 'Portfolio Value (USDT)' : 'Gain/Loss (USDT)',
                             data: dataValues,
-                            borderColor: activeChart === 'performance' ? '#00c4cc' : 
-                                         (dataValues[dataValues.length - 1] >= 0 ? '#00dc82' : '#ef4444'),
-                            backgroundColor: activeChart === 'performance' ? 'rgba(0, 196, 204, 0.1)' : 
-                                            (dataValues[dataValues.length - 1] >= 0 ? 'rgba(0, 220, 130, 0.1)' : 'rgba(239, 68, 68, 0.1)'),
+                            borderColor: activeChart === 'performance' ? '#00c9ff' : 
+                                         (dataValues[dataValues.length - 1] >= 0 ? '#92fe9d' : '#ff4d6d'),
+                            backgroundColor: activeChart === 'performance' ? 'rgba(0, 201, 255, 0.1)' : 
+                                            (dataValues[dataValues.length - 1] >= 0 ? 'rgba(146, 254, 157, 0.1)' : 'rgba(255, 77, 109, 0.1)'),
                             borderWidth: 2,
-                            pointBackgroundColor: activeChart === 'performance' ? '#00c4cc' : 
-                                                 (dataValues[dataValues.length - 1] >= 0 ? '#00dc82' : '#ef4444'),
+                            pointBackgroundColor: activeChart === 'performance' ? '#00c9ff' : 
+                                                 (dataValues[dataValues.length - 1] >= 0 ? '#92fe9d' : '#ff4d6d'),
                             pointRadius: 4,
                             pointHoverRadius: 6,
                             tension: 0.3,
@@ -1987,10 +2047,10 @@
                         scales: {
                             y: {
                                 grid: {
-                                    color: 'rgba(148, 163, 184, 0.1)'
+                                    color: 'rgba(138, 159, 181, 0.1)'
                                 },
                                 ticks: {
-                                    color: '#94a3b8',
+                                    color: '#8a9fb5',
                                     callback: function(value) {
                                         return '$' + formatPrice(value);
                                     }
@@ -1998,10 +2058,10 @@
                             },
                             x: {
                                 grid: {
-                                    color: 'rgba(148, 163, 184, 0.1)'
+                                    color: 'rgba(138, 159, 181, 0.1)'
                                 },
                                 ticks: {
-                                    color: '#94a3b8'
+                                    color: '#8a9fb5'
                                 }
                             }
                         }
@@ -2016,7 +2076,7 @@
                         datasets: [{
                             label: 'Portfolio Value (USDT)',
                             data: [0],
-                            borderColor: '#00c4cc',
+                            borderColor: '#00c9ff',
                             borderWidth: 2
                         }]
                     },
@@ -2191,6 +2251,14 @@
             // TradingView symbol selector
             symbolSelect.addEventListener('change', function() {
                 initTradingView(this.value);
+            });
+            
+            // Add sort event listeners to table headers
+            document.querySelectorAll('th[data-sort]').forEach(header => {
+                header.addEventListener('click', () => {
+                    const sortKey = header.getAttribute('data-sort');
+                    sortPortfolio(sortKey);
+                });
             });
             
             updateLastUpdated();
